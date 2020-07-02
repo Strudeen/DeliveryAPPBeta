@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +22,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
+
+    private TextView nametxt, emailtxt, uidtxt;
+
 
     public TextView listar;
     public Button logout;
@@ -32,8 +39,37 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //FirebaseUser user = mAuth.getCurrentUser();
 
+        nametxt = findViewById(R.id.text_name);
+        emailtxt = findViewById(R.id.text_email);
+        uidtxt = findViewById(R.id.text_uid);
+        logout = findViewById(R.id.logoutButton);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null){
+            String name = user.getDisplayName();
+            String email = user.getEmail();
+            Uri photo = user.getPhotoUrl();
+            String Uid = user.getUid();
+
+            nametxt.setText(name);
+            emailtxt.setText(email);
+            uidtxt.setText(Uid);
+        } else {
+            goLoginScreen();
+        }
+
+
+     //Comente estas lineas porque me daba error al mostrar datos con Facebook pero ahora tambien muestra los datos de google y facebook xd asi que no pasa nada jejeje jklsdjalkdsa
+        //Funciona el logout para ambos servicios
+/*
         dbOruro = FirebaseDatabase.getInstance().getReference().child("Usuario").child(currentUser.getUid());
         listar = findViewById(R.id.listar);
         logout = findViewById(R.id.logoutButton);
@@ -58,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
         private void updateUI(FirebaseUser currentUser) {
             if (currentUser == null){
                 Intent main=new Intent(MainActivity.this,DestinyLogin.class);
@@ -72,4 +109,22 @@ public class MainActivity extends AppCompatActivity {
             mAuth.signOut();
             updateUI(null);
         }
+
+        */
+
+
+    }
+    public void logout(){
+        FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
+        goLoginScreen();
+    }
+
+
+    private void goLoginScreen() {
+        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }
+
