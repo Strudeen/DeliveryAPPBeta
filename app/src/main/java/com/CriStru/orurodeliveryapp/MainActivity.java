@@ -6,11 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,14 +21,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
-import java.net.URL;
-
 public class MainActivity extends AppCompatActivity {
 
-    private TextView nametxt, emailtxt, uidtxt;
-
+    private TextView tvNombre,tvDescripcion;
+    private ImageView fotoCategoria;
 
     public TextView listar;
     public Button logout;
@@ -40,11 +37,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         //FirebaseUser user = mAuth.getCurrentUser();
-
-        nametxt = findViewById(R.id.text_name);
-        emailtxt = findViewById(R.id.text_email);
-        uidtxt = findViewById(R.id.text_uid);
+        tvNombre=findViewById(R.id.tvNombreCategoria);
+        tvDescripcion=findViewById(R.id.tvDescripcion);
+        //nametxt = findViewById(R.id.text_name);
+        //emailtxt = findViewById(R.id.text_email);
+        //uidtxt = findViewById(R.id.text_uid);
         logout = findViewById(R.id.logoutButton);
+        fotoCategoria=findViewById(R.id.FotoCategoria);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,13 +57,13 @@ public class MainActivity extends AppCompatActivity {
             String email = user.getEmail();
             Uri photo = user.getPhotoUrl();
             String Uid = user.getUid();
-
-            nametxt.setText(name);
-            emailtxt.setText(email);
-            uidtxt.setText(Uid);
+            //nametxt.setText(name);
+            //emailtxt.setText(email);
+            //uidtxt.setText(Uid);
         } else {
             goLoginScreen();
         }
+        ListarCategorias();
 
 
      //Comente estas lineas porque me daba error al mostrar datos con Facebook pero ahora tambien muestra los datos de google y facebook xd asi que no pasa nada jejeje jklsdjalkdsa
@@ -111,9 +110,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         */
-
-
     }
+
+    public void ListarCategorias(){
+        dbOruro = FirebaseDatabase.getInstance().getReference().child("Categorias").child("01");
+        dbOruro.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                tvNombre.setText((dataSnapshot.child("Nombre").getValue().toString()));
+                tvDescripcion.setText((dataSnapshot.child("Descripcion").getValue().toString()));
+                Glide.with(MainActivity.this).load(dataSnapshot.child("FotoUrl").getValue().toString()).into(fotoCategoria);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void logout(){
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
