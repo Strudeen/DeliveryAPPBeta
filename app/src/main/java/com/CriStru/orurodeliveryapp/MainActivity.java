@@ -2,16 +2,19 @@ package com.CriStru.orurodeliveryapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.CriStru.orurodeliveryapp.Adapters.CategoriasAdapter;
+import com.CriStru.orurodeliveryapp.Adapters.ItemClickSupport;
+import com.CriStru.orurodeliveryapp.Models.Categoria;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,33 +24,37 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tvNombre,tvDescripcion;
-    private ImageView fotoCategoria;
-
-    public TextView listar;
     public Button logout;
     private DatabaseReference dbOruro;
     private FirebaseAuth mAuth;
+    private CategoriasAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private ArrayList<Categoria> categoriaList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
-        //FirebaseUser user = mAuth.getCurrentUser();
-        tvNombre=findViewById(R.id.tvNombreCategoria);
-        tvDescripcion=findViewById(R.id.tvDescripcion);
-        //nametxt = findViewById(R.id.text_name);
-        //emailtxt = findViewById(R.id.text_email);
-        //uidtxt = findViewById(R.id.text_uid);
+        mRecyclerView=findViewById(R.id.recyclerviewCategorias);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        dbOruro=FirebaseDatabase.getInstance().getReference();
+
         logout = findViewById(R.id.logoutButton);
-        fotoCategoria=findViewById(R.id.FotoCategoria);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logout();
+            }
+        });
+        ItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Toast.makeText(getApplicationContext(),"Posicion"+position,Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -63,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             goLoginScreen();
         }
-        ListarCategorias();
+        //ListarCategorias();
+        getCategoriasFromFirebase();
 
 
      //Comente estas lineas porque me daba error al mostrar datos con Facebook pero ahora tambien muestra los datos de google y facebook xd asi que no pasa nada jejeje jklsdjalkdsa
@@ -112,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         */
     }
 
-    public void ListarCategorias(){
+    /*public void ListarCategorias(){
         dbOruro = FirebaseDatabase.getInstance().getReference().child("Categorias").child("01");
         dbOruro.addValueEventListener(new ValueEventListener() {
             @Override
@@ -127,14 +135,37 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
 
     public void logout(){
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
         goLoginScreen();
     }
+     public void getCategoriasFromFirebase(){
+        dbOruro.child("Categorias").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    categoriaList.clear();
+                    for (DataSnapshot ds:
+                         dataSnapshot.getChildren()) {
+                        String Nombre=ds.child("Nombre").getValue().toString();
+                        String Descripcion=ds.child("Descripcion").getValue().toString();
+                        String FotoUrl=ds.child("FotoUrl").getValue().toString();
+                        categoriaList.add(new Categoria(Nombre,Descripcion,FotoUrl));
+                    }
+                    mAdapter=new CategoriasAdapter(categoriaList,R.layout.categorias_card,getApplicationContext());
+                    mRecyclerView.setAdapter(mAdapter);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+     }
 
     private void goLoginScreen() {
         Intent intent = new Intent(MainActivity.this, SignInActivity.class);

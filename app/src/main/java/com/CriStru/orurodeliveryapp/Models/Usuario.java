@@ -1,4 +1,4 @@
-package com.CriStru.orurodeliveryapp;
+package com.CriStru.orurodeliveryapp.Models;
 
 public class Usuario {
     String nombre;
