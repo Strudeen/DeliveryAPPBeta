@@ -3,17 +3,17 @@ package com.CriStru.orurodeliveryapp.Models;
 public class Usuario {
     String nombre;
     String apellido;
-    String ci;
+    String celular;
 
     public Usuario() {
     }
 
     String tipo;
 
-    public Usuario(String nombre, String apellido, String ci, String tipo) {
+    public Usuario(String nombre, String apellido, String celular, String tipo) {
         this.nombre = nombre;
         this.apellido = apellido;
-        this.ci = ci;
+        this.celular = celular;
         this.tipo = tipo;
     }
 
@@ -33,12 +33,12 @@ public class Usuario {
         this.apellido = apellido;
     }
 
-    public String getCi() {
-        return ci;
+    public String getCelular() {
+        return celular;
     }
 
-    public void setCi(String ci) {
-        this.ci = ci;
+    public void setCelular(String celular) {
+        this.celular = celular;
     }
 
     public String getTipo() {
