@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".SignInActivity">
 
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/signin_button"
+        android:layout_width="178dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="117dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginEnd="119dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/login_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etContraseñaSignIn" />
+
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
@@ -69,7 +83,7 @@
         android:id="@+id/btnIngresarSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="140dp"
         android:text="Ingresar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

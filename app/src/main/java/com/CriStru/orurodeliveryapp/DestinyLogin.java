@@ -17,6 +17,7 @@ public class DestinyLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_destiny_login);
+        setTheme(R.style.AppTheme);
         btnSignUp=findViewById(R.id.btnSignUp);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
