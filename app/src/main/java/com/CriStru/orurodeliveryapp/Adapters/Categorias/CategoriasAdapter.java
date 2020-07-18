@@ -1,4 +1,4 @@
-package com.CriStru.orurodeliveryapp.Adapters;
+package com.CriStru.orurodeliveryapp.Adapters.Categorias;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -40,6 +40,7 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
         Categoria categoria=categoriaList.get(position);
         holder.textViewNombreCategorias.setText(categoria.getNombre());
         holder.textViewDescripcionCategorias.setText(categoria.getDescripcion());
+        holder.idCategorias.setText(categoria.getCategoria_id());
         Glide.with(context).load(categoria.getFotoUrl()).into(holder.imageViewCategorias);
     }
 
@@ -49,7 +50,7 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView textViewNombreCategorias,textViewDescripcionCategorias;
+        private TextView textViewNombreCategorias,textViewDescripcionCategorias,idCategorias;
         private ImageView imageViewCategorias;
         public View view;
         public ViewHolder(View view){
@@ -58,6 +59,7 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
             this.textViewNombreCategorias=(TextView)view.findViewById(R.id.textViewNombreCategoria);
             this.textViewDescripcionCategorias=(TextView) view.findViewById(R.id.textViewDescripcionCategoria);
             this.imageViewCategorias=(ImageView)view.findViewById(R.id.imageViewCategorias);
+            this.idCategorias= (TextView) view.findViewById(R.id.idCategorias);
         }
     }
 

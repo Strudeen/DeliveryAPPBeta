@@ -1,4 +1,4 @@
-package com.CriStru.orurodeliveryapp.Adapters;
+package com.CriStru.orurodeliveryapp.Adapters.Categorias;
 
 import android.view.View;
 

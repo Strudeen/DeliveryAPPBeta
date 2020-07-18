@@ -1,15 +1,27 @@
 package com.CriStru.orurodeliveryapp.Models;
 
 public class Categoria {
+    String categoria_id;
     String Nombre;
     String Descripcion;
     String FotoUrl;
+
     public Categoria() {
     }
-    public Categoria(String nombre, String descripcion, String fotoUrl) {
+
+    public Categoria(String categoria_id, String nombre, String descripcion, String fotoUrl) {
+        this.categoria_id = categoria_id;
         Nombre = nombre;
         Descripcion = descripcion;
         FotoUrl = fotoUrl;
+    }
+
+    public String getCategoria_id() {
+        return categoria_id;
+    }
+
+    public void setCategoria_id(String categoria_id) {
+        this.categoria_id = categoria_id;
     }
 
     public String getNombre() {
