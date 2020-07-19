@@ -2,6 +2,7 @@ package com.CriStru.orurodeliveryapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -48,6 +49,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         mAuth=FirebaseAuth.getInstance();
         progressBarSignUp=findViewById(R.id.progress_barSignUp);
         progressBarSignUp.setVisibility(View.INVISIBLE);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        myToolbar.setTitle("Registrarse");
+        myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override

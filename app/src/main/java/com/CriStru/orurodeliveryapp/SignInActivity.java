@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.inputmethod.InputConnectionCompat;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.pm.SigningInfo;
 import android.net.wifi.hotspot2.pps.Credential;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -47,7 +49,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.Arrays;
 
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
-    Button btningresar;
+    Button btningresar,btnRegistrarse;
     EditText etEmail,etContraseña;
     private TextView textViewUser;
 
@@ -65,7 +67,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_AppCompat_DayNight_NoActionBar);
         setContentView(R.layout.activity_sign_in);
+
         setUpView();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -74,10 +78,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-
-
-
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -134,7 +134,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private void handleTokenFacebook(AccessToken accessToken) {
 
         progressBar.setVisibility(View.VISIBLE);
-        loginButton.setVisibility(View.GONE);
 
         Log.d(TAG, "handleTokenFacebook" + accessToken);
 
@@ -152,7 +151,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         updateUI(null);
                     }
                     progressBar.setVisibility(View.GONE );
-                    loginButton.setVisibility(View.VISIBLE);
 
                 }
             });
@@ -222,7 +220,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null){
-            textViewUser.setText(currentUser.getDisplayName());
+
             Intent main=new Intent(SignInActivity.this,MainActivity.class);
             startActivity(main);
         }
@@ -232,13 +230,15 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     }
     private void setUpView() {
         btningresar=findViewById(R.id.btnIngresarSignIn);
-        textViewUser = findViewById(R.id.textView);
+
         signInButton = findViewById(R.id.signin_button);
         loginButton = findViewById(R.id.login_button);
         etEmail=findViewById(R.id.etEmailSignIn);
         etContraseña=findViewById(R.id.etContraseñaSignIn);
         progressBar = findViewById(R.id.progressBar);
         mAuth=FirebaseAuth.getInstance();
+        btnRegistrarse=findViewById(R.id.btnRegistrarse);
+        btnRegistrarse.setOnClickListener(this);
         btningresar.setOnClickListener(this);
         signInButton.setOnClickListener(this);
     }
@@ -278,6 +278,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.signin_button:
                 signIn();
+                break;
+            case R.id.btnRegistrarse:
+                Intent intent=new Intent(SignInActivity.this,SignUpActivity.class);
+                startActivity(intent);
                 break;
         }
     }
