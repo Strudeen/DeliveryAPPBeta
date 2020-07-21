@@ -10,12 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.CriStru.orurodeliveryapp.Adapters.Productos.ProductosAdapter;
 import com.CriStru.orurodeliveryapp.Adapters.SubCategorias.SubCategoriasAdapter;
 import com.CriStru.orurodeliveryapp.Adapters.SubCategorias.ItemClickSupportSubCategorias;
-import com.CriStru.orurodeliveryapp.Models.Producto;
 import com.CriStru.orurodeliveryapp.Models.SubCategoria;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -63,7 +60,7 @@ public class SubCategoriasActivity extends AppCompatActivity {
                 String id=textViewid.getText().toString();
                 Bundle bundle = new Bundle();
                 bundle.putString("IDSUBCATEGORIA",id);
-                Fragment fragment=new ItemFragment();
+                Fragment fragment=new ProductosFragment();
                 fragment.setArguments(bundle);
                 getSupportFragmentManager().popBackStack();
                 getSupportFragmentManager().beginTransaction().add(R.id.FragmentHolder,fragment).addToBackStack(null).commit();

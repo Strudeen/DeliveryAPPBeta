@@ -24,14 +24,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ItemFragment extends Fragment {
+public class ProductosFragment extends Fragment {
     private ArrayList<Producto> productoArrayList;
     private ProductosAdapter mAdapter;
     private DatabaseReference mDataBase;
     private Context context;
     private RecyclerView recyclerView;
     private String idSubcategoria;
-    public ItemFragment() {
+    public ProductosFragment() {
     }
 
 
