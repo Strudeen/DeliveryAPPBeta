@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "731945203515",
+    "firebase_url": "https://bamboobeta-2b079.firebaseio.com",
+    "project_id": "bamboobeta-2b079",
+    "storage_bucket": "bamboobeta-2b079.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731945203515:android:ecb23ebff61f3a1ba2691e",
+        "android_client_info": {
+          "package_name": "com.CriStru.orurodeliveryapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "731945203515-18ttru5ki7ubglfei38avtdbc45mtej9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.CriStru.orurodeliveryapp",
+            "certificate_hash": "f3d5f084a831bbde0f6232f1dd587b6aeaff15c2"
+          }
+        },
+        {
+          "client_id": "731945203515-2rc860etpark1mjg2hqiq4oqre7jqqsv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUDJAtSqjS1fyMx38mM2OQkVucM2uwO1k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "731945203515-2rc860etpark1mjg2hqiq4oqre7jqqsv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

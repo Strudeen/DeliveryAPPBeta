@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.ViewHolder> {
+
     private int resource;
     private ArrayList<Categoria> categoriaList;
     private Context context;
@@ -49,20 +50,18 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
         return categoriaList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView textViewNombreCategorias,textViewDescripcionCategorias,idCategorias;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView textViewNombreCategorias, textViewDescripcionCategorias, idCategorias;
         private ImageView imageViewCategorias;
         public View view;
-        public ViewHolder(View view){
+
+        public ViewHolder(View view) {
             super(view);
-            this.view=view;
-            this.textViewNombreCategorias=(TextView)view.findViewById(R.id.textViewNombreCategoria);
-            this.textViewDescripcionCategorias=(TextView) view.findViewById(R.id.textViewDescripcionCategoria);
-            this.imageViewCategorias=(ImageView)view.findViewById(R.id.imageViewCategorias);
-            this.idCategorias= (TextView) view.findViewById(R.id.idCategorias);
+            this.view = view;
+            this.textViewNombreCategorias = (TextView) view.findViewById(R.id.textViewNombreCategoria);
+            this.textViewDescripcionCategorias = (TextView) view.findViewById(R.id.textViewDescripcionCategoria);
+            this.imageViewCategorias = (ImageView) view.findViewById(R.id.imageViewCategorias);
+            this.idCategorias = (TextView) view.findViewById(R.id.idCategorias);
         }
     }
-
-
-
 }

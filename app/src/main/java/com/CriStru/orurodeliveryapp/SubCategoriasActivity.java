@@ -11,8 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.CriStru.orurodeliveryapp.Adapters.SubCategorias.SubCategoriasAdapter;
 import com.CriStru.orurodeliveryapp.Adapters.SubCategorias.ItemClickSupportSubCategorias;
+import com.CriStru.orurodeliveryapp.Adapters.SubCategorias.SubCategoriasAdapter;
 import com.CriStru.orurodeliveryapp.Models.SubCategoria;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
