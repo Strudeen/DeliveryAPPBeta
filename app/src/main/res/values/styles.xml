@@ -10,5 +10,11 @@
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
+    <!-- Base application theme. -->
+    <style name="AppDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 
 </resources>

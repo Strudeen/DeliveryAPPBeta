@@ -1,6 +1,7 @@
 package com.CriStru.orurodeliveryapp.Adapters.SubCategorias;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.CriStru.orurodeliveryapp.Models.Categoria;
 import com.CriStru.orurodeliveryapp.Models.SubCategoria;
 import com.CriStru.orurodeliveryapp.R;
+import com.CriStru.orurodeliveryapp.UI.CategoriasDialogActivity;
+import com.CriStru.orurodeliveryapp.UI.SubCategoriasDialog;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -49,9 +52,9 @@ public class SubCategoriasAdapter extends RecyclerView.Adapter<SubCategoriasAdap
         return subCategoriaArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvNombre,tvDescripcion,tvIdSubCategoria;
-        ImageView imageViewSubCategoria;
+        ImageView imageViewSubCategoria,editSubCategoria;
         View view;
         public ViewHolder(View view){
             super(view);
@@ -60,6 +63,21 @@ public class SubCategoriasAdapter extends RecyclerView.Adapter<SubCategoriasAdap
             this.tvDescripcion=(TextView) view.findViewById(R.id.tvDescripcionSubCategoria);
             this.tvIdSubCategoria=(TextView) view.findViewById(R.id.tvIdSubCategoria);
             this.imageViewSubCategoria=(ImageView) view.findViewById(R.id.imageViewSubCategoria);
+            this.editSubCategoria=(ImageView) view.findViewById(R.id.editSubCategoria);
+            this.editSubCategoria.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.editSubCategoria:
+                    Intent intent = new Intent(context, SubCategoriasDialog.class);
+                    intent.putExtra("idSubCategoriaSubD",tvIdSubCategoria.getText().toString());
+                    intent.putExtra("idCategoriaSubD","");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                    break;
+            }
         }
     }
 }

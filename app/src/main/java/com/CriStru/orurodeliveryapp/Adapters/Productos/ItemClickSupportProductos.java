@@ -1,4 +1,4 @@
-package com.CriStru.orurodeliveryapp.Adapters.Categorias;
+package com.CriStru.orurodeliveryapp.Adapters.Productos;
 
 import android.view.View;
 
@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.CriStru.orurodeliveryapp.R;
 
-public class ItemClickSupport {
+public class ItemClickSupportProductos {
 
     private final RecyclerView mRecyclerView;
-    private OnItemClickListener mOnItemClickListener;
-    private OnItemLongClickListener mOnItemLongClickListener;
+    private com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport.OnItemClickListener mOnItemClickListener;
+    private com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport.OnItemLongClickListener mOnItemLongClickListener;
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -51,7 +51,7 @@ public class ItemClickSupport {
         }
     };
 
-    public ItemClickSupport(RecyclerView recyclerView) {
+    public ItemClickSupportProductos(RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
         // the ID must be declared in XML, used to avoid
         // replacing the ItemClickSupport without removing
@@ -60,30 +60,30 @@ public class ItemClickSupport {
         mRecyclerView.addOnChildAttachStateChangeListener(mAttachListener);
     }
 
-    public static ItemClickSupport addTo(RecyclerView view) {
+    public static com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport addTo(RecyclerView view) {
         // if there's already an ItemClickSupport attached
         // to this RecyclerView do not replace it, use it
-        ItemClickSupport support = (ItemClickSupport) view.getTag(R.id.cardviewCategorias);
+        com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport support = (com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport) view.getTag(R.id.cardviewCategorias);
         if (support == null) {
-            support = new ItemClickSupport(view);
+            support = new com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport(view);
         }
         return support;
     }
 
-    public static ItemClickSupport removeFrom(RecyclerView view) {
-        ItemClickSupport support = (ItemClickSupport) view.getTag(R.id.cardviewCategorias);
+    public static com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport removeFrom(RecyclerView view) {
+        com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport support = (com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport) view.getTag(R.id.cardviewCategorias);
         if (support != null) {
             support.detach(view);
         }
         return support;
     }
 
-    public ItemClickSupport setOnItemClickListener(OnItemClickListener listener) {
+    public ItemClickSupportProductos setOnItemClickListener(com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport.OnItemClickListener listener) {
         mOnItemClickListener = listener;
         return this;
     }
 
-    public ItemClickSupport setOnItemLongClickListener(OnItemLongClickListener listener) {
+    public ItemClickSupportProductos setOnItemLongClickListener(com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport.OnItemLongClickListener listener) {
         mOnItemLongClickListener = listener;
         return this;
     }

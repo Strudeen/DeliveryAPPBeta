@@ -2,13 +2,17 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardviewProductos"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="0dp">
+    android:layout_height="128dp"
+    android:layout_margin="8dp"
+    android:elevation="8dp"
+    android:maxWidth="128dp"
+    app:cardElevation="8dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="128dp">
 
         <TextView
             android:id="@+id/tvNombreProductoCard"
@@ -25,10 +29,12 @@
             android:id="@+id/imageViewProductosCard"
             android:layout_width="128dp"
             android:layout_height="128dp"
+            android:maxWidth="128dp"
+            android:maxHeight="128dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="false"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
@@ -47,12 +53,13 @@
         <TextView
             android:id="@+id/tvStockCard"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="22sp"
             android:layout_below="@+id/tvPrecioCard"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="false"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="0dp"
             android:text="Stock: 20"
             android:textSize="18sp" />
 
@@ -62,5 +69,15 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/editarProducto"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_margin="8dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            app:srcCompat="@drawable/ic_edit" />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

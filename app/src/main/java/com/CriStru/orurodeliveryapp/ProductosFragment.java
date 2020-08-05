@@ -1,6 +1,7 @@
 package com.CriStru.orurodeliveryapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,8 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport;
+import com.CriStru.orurodeliveryapp.Adapters.Productos.ItemClickSupportProductos;
 import com.CriStru.orurodeliveryapp.Adapters.Productos.ProductosAdapter;
 import com.CriStru.orurodeliveryapp.Models.Producto;
 import com.google.firebase.database.DataSnapshot;
@@ -54,6 +58,16 @@ public class ProductosFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context,RecyclerView.VERTICAL,false));
         LlenarDatos();
         Toast.makeText(context, idSubcategoria, Toast.LENGTH_SHORT).show();
+        ItemClickSupportProductos.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                TextView idProducto = (TextView) v.findViewById(R.id.tvIdProducto);
+                Intent intent = new Intent(context, ProductosActivity.class);
+                intent.putExtra("idProducto", idProducto.getText().toString());
+                startActivity(intent);
+                Toast.makeText(context, idProducto.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
 
@@ -67,13 +81,13 @@ public class ProductosFragment extends Fragment {
                     for (DataSnapshot ds:
                          dataSnapshot.getChildren()) {
 
-                        if (ds.child("SubCategoria").getValue().toString().equals(idSubcategoria)){
-                            String SubCategoria=ds.child("SubCategoria").getValue().toString();
-                            String Nombre=ds.child("Nombre").getValue().toString();
-                            String Descripcion=ds.child("Descripcion").getValue().toString();
-                            String FotoUrl=ds.child("FotoUrl").getValue().toString();
-                            int Stock=Integer.parseInt(ds.child("Stock").getValue().toString());
-                            float precio=Float.parseFloat(ds.child("Precio").getValue().toString());
+                        if (ds.child("subCategoria").getValue().toString().equals(idSubcategoria)){
+                            String SubCategoria=ds.child("subCategoria").getValue().toString();
+                            String Nombre=ds.child("nombre").getValue().toString();
+                            String Descripcion=ds.child("descripcion").getValue().toString();
+                            String FotoUrl=ds.child("fotoUrl").getValue().toString();
+                            int Stock=Integer.parseInt(ds.child("stock").getValue().toString());
+                            float precio=Float.parseFloat(ds.child("precio").getValue().toString());
                             String IdProducto=ds.getKey();
                             productoArrayList.add(new Producto(SubCategoria,Nombre,Descripcion,FotoUrl,Stock,precio,IdProducto));
                         }

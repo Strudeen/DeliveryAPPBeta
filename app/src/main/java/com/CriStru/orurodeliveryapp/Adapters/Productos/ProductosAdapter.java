@@ -1,17 +1,21 @@
 package com.CriStru.orurodeliveryapp.Adapters.Productos;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.CriStru.orurodeliveryapp.Models.Producto;
 import com.CriStru.orurodeliveryapp.R;
+import com.CriStru.orurodeliveryapp.UI.ProductosDialogActivity;
+import com.CriStru.orurodeliveryapp.UI.SubCategoriasDialog;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -39,8 +43,8 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Producto producto=productoArrayList.get(position);
         holder.tvNombre.setText(producto.getNombre());
-        holder.tvStock.setText(String.valueOf(producto.getStock()));
-        holder.tvPrecio.setText(String.valueOf(producto.getPrecio()));
+        holder.tvStock.setText("Stock: "+String.valueOf(producto.getStock()));
+        holder.tvPrecio.setText(String.valueOf(producto.getPrecio())+" Bs");
         holder.tvIdProducto.setText(producto.getIdProducto());
         Glide.with(context).load(producto.getFotoUrl()).into(holder.imageViewProducto);
     }
@@ -50,9 +54,9 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.View
         return productoArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvNombre,tvPrecio,tvIdProducto,tvStock;
-        ImageView imageViewProducto;
+        ImageView imageViewProducto,editarProducto;
         View view;
         public ViewHolder(View view){
             super(view);
@@ -62,6 +66,21 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.View
             this.tvPrecio=(TextView) view.findViewById(R.id.tvPrecioCard);
             this.tvStock=(TextView) view.findViewById(R.id.tvStockCard);
             this.imageViewProducto=(ImageView) view.findViewById(R.id.imageViewProductosCard);
+            this.editarProducto = (ImageView) view.findViewById(R.id.editarProducto);
+            this.editarProducto.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.editarProducto:
+                    Intent intent = new Intent(context, ProductosDialogActivity.class);
+                    intent.putExtra("idProductoD",tvIdProducto.getText().toString());
+                    intent.putExtra("idCategoriaSubD","");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                    break;
+            }
         }
     }
 }

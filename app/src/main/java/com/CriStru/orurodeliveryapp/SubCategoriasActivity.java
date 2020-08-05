@@ -6,14 +6,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.CriStru.orurodeliveryapp.Adapters.SubCategorias.ItemClickSupportSubCategorias;
 import com.CriStru.orurodeliveryapp.Adapters.SubCategorias.SubCategoriasAdapter;
 import com.CriStru.orurodeliveryapp.Models.SubCategoria;
+import com.CriStru.orurodeliveryapp.UI.CategoriasDialogActivity;
+import com.CriStru.orurodeliveryapp.UI.ProductosDialogActivity;
+import com.CriStru.orurodeliveryapp.UI.SubCategoriasDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -73,7 +80,7 @@ public class SubCategoriasActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot!=null){
-                    nombreCategoria=dataSnapshot.child("Nombre").getValue().toString();
+                    nombreCategoria=dataSnapshot.child("nombre").getValue().toString();
                     Log.d("idCategoria",idCategoria);
                     tvNombreCategoria.setText(nombreCategoria);
                 }
@@ -92,11 +99,11 @@ public class SubCategoriasActivity extends AppCompatActivity {
                     subCategoriaArrayList.clear();
                     for (DataSnapshot ds:
                             dataSnapshot.getChildren()){
-                        if (ds.child("Categoria").getValue().toString().equals(idCategoria)) {
-                            String Nombre=ds.child("Nombre").getValue().toString();
-                            String Descripcion=ds.child("Descripcion").getValue().toString();
-                            String FotoUrl=ds.child("FotoUrl").getValue().toString();
-                            String Categoria=ds.child("Categoria").getValue().toString();
+                        if (ds.child("categoria").getValue().toString().equals(idCategoria)) {
+                            String Nombre=ds.child("nombre").getValue().toString();
+                            String Descripcion=ds.child("descripcion").getValue().toString();
+                            String FotoUrl=ds.child("fotoUrl").getValue().toString();
+                            String Categoria=ds.child("categoria").getValue().toString();
                             String id =ds.getKey();
                             subCategoriaArrayList.add(new SubCategoria(Categoria,Nombre,Descripcion,FotoUrl,id));
                         }
@@ -111,5 +118,31 @@ public class SubCategoriasActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_icon_subcat, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.itemAñadirSubCategoria:
+                Intent intent = new Intent(SubCategoriasActivity.this, SubCategoriasDialog.class);
+                intent.putExtra("idSubCategoriaSubD", "");
+                intent.putExtra("idCategoriaSubD",idCategoria);
+                startActivity(intent);
+                return true;
+            case R.id.itemAñadirProducto:
+                Intent intent2 = new Intent(SubCategoriasActivity.this, ProductosDialogActivity.class);
+                intent2.putExtra("idCategoriaSubD",idCategoria);
+                intent2.putExtra("idProductoD","");
+                startActivity(intent2);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

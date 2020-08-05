@@ -1,6 +1,7 @@
 package com.CriStru.orurodeliveryapp.Adapters.Categorias;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.CriStru.orurodeliveryapp.UI.CategoriasDialogActivity;
 import com.CriStru.orurodeliveryapp.Models.Categoria;
 import com.CriStru.orurodeliveryapp.R;
 import com.bumptech.glide.Glide;
@@ -50,9 +52,9 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
         return categoriaList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView textViewNombreCategorias, textViewDescripcionCategorias, idCategorias;
-        private ImageView imageViewCategorias;
+        private ImageView imageViewCategorias,editCategoriaCard;
         public View view;
 
         public ViewHolder(View view) {
@@ -62,6 +64,20 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
             this.textViewDescripcionCategorias = (TextView) view.findViewById(R.id.textViewDescripcionCategoria);
             this.imageViewCategorias = (ImageView) view.findViewById(R.id.imageViewCategorias);
             this.idCategorias = (TextView) view.findViewById(R.id.idCategorias);
+            this.editCategoriaCard=(ImageView) view.findViewById(R.id.editCategoriaCard);
+            this.editCategoriaCard.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.editCategoriaCard:
+                    Intent intent = new Intent(context, CategoriasDialogActivity.class);
+                    intent.putExtra("idCategoriaDialog",idCategorias.getText().toString());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                    break;
+            }
         }
     }
 }

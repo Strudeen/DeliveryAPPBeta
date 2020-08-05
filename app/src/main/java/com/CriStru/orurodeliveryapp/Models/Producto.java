@@ -13,13 +13,22 @@ public class Producto {
     }
 
     public Producto(String subCategoria, String nombre, String descripcion, String fotoUrl, int stock, float precio, String idProducto) {
-        SubCategoria = subCategoria;
-        Nombre = nombre;
-        Descripcion = descripcion;
-        FotoUrl = fotoUrl;
-        Stock = stock;
+        this.SubCategoria = subCategoria;
+        this.Nombre = nombre;
+        this.Descripcion = descripcion;
+        this.FotoUrl = fotoUrl;
+        this.Stock = stock;
         this.precio = precio;
-        IdProducto = idProducto;
+        this.IdProducto = idProducto;
+    }
+
+    public Producto(String subCategoria, String nombre, String descripcion, String fotoUrl, int stock, float precio) {
+        this.SubCategoria = subCategoria;
+        this.Nombre = nombre;
+        this.Descripcion = descripcion;
+        this.FotoUrl = fotoUrl;
+        this.Stock = stock;
+        this.precio = precio;
     }
 
     public String getSubCategoria() {

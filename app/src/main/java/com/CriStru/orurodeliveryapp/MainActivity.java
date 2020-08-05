@@ -13,6 +13,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.CriStru.orurodeliveryapp.Adapters.Categorias.CategoriasAdapter;
 import com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport;
 import com.CriStru.orurodeliveryapp.Models.Categoria;
+import com.CriStru.orurodeliveryapp.UI.CategoriasDialogActivity;
 import com.facebook.login.LoginManager;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,11 +88,9 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 TextView idCategoria = (TextView) v.findViewById(R.id.idCategorias);
-                ;
                 Intent intent = new Intent(MainActivity.this, SubCategoriasActivity.class);
                 intent.putExtra("idCategoria", idCategoria.getText().toString());
                 startActivity(intent);
-                Toast.makeText(getApplicationContext(), idCategoria.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -115,9 +115,9 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                     categoriaList.clear();
                     for (DataSnapshot ds :
                             dataSnapshot.getChildren()) {
-                        String Nombre = ds.child("Nombre").getValue().toString();
-                        String Descripcion = ds.child("Descripcion").getValue().toString();
-                        String FotoUrl = ds.child("FotoUrl").getValue().toString();
+                        String Nombre = ds.child("nombre").getValue().toString();
+                        String Descripcion = ds.child("descripcion").getValue().toString();
+                        String FotoUrl = ds.child("fotoUrl").getValue().toString();
                         String id = ds.getKey();
                         categoriaList.add(new Categoria(id, Nombre, Descripcion, FotoUrl));
                     }
@@ -160,6 +160,29 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             logout();
         }
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_superior_icons, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add:
+                Intent intent = new Intent(MainActivity.this, CategoriasDialogActivity.class);
+                intent.putExtra("idCategoriaDialog", "");
+                startActivity(intent);
+                return true;
+            case R.id.search:
+                Intent intent2 = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent2);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
 

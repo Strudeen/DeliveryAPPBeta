@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.CategoriasDialogActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".UI.CategoriasDialogActivity">
+            <EditText
+                android:id="@+id/etNombreProductoD"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:ems="10"
+                android:hint="Nombre"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/etDescripcionProdcutoD"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etNombreProductoD"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="0dp"
+                android:ems="10"
+                android:hint="Decripcion"
+                android:inputType="textMultiLine" />
+            <EditText
+                android:id="@+id/etPrecioD"
+                android:layout_width="fill_parent"
+                android:layout_below="@+id/etDescripcionProdcutoD"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:ems="10"
+                android:hint="Precio"
+                android:inputType="numberDecimal" />
+            <EditText
+                android:id="@+id/etStockD"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etPrecioD"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:ems="10"
+                android:hint="Stock"
+                android:inputType="number" />
+            <Spinner
+                android:id="@+id/SpinnerProductosD"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentEnd="true"
+                android:hint="Seleccione la subcategoria"
+                android:layout_below="@+id/etStockD"/>
+
+            <Button
+                android:id="@+id/btnCargarImagenProductoD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/SpinnerProductosD"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="0dp"
+                android:text="Cargar Imagen" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/imageViewFotoProductoD"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                tools:ignore="UnknownId">
+
+                <Button
+                    android:id="@+id/btnCancelarProductoD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/etNombreFotoD"
+                    android:layout_alignParentStart="true"
+                    android:layout_margin="8dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_weight="0.5"
+                    android:text="Cancelar" />
+
+                <Button
+                    android:id="@+id/btnGuardarProductoD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/etNombreFotoD"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="8dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="0.5"
+                    android:text="Guardar" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageViewFotoProductoD"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                tools:srcCompat="@tools:sample/avatars"
+                android:layout_below="@+id/btnCargarImagenProductoD"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"/>
+            <ProgressBar
+                android:id="@+id/progress_bar_proD"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:elevation="2dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

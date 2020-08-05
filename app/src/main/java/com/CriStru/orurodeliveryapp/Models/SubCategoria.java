@@ -11,11 +11,17 @@ public class SubCategoria {
     }
 
     public SubCategoria(String categoria, String nombre, String descripcion, String fotoUrl, String idSubCategoria) {
-        Categoria = categoria;
-        Nombre = nombre;
-        Descripcion = descripcion;
-        FotoUrl = fotoUrl;
-        IdSubCategoria = idSubCategoria;
+        this.Categoria = categoria;
+        this.Nombre = nombre;
+        this.Descripcion = descripcion;
+        this.FotoUrl = fotoUrl;
+        this.IdSubCategoria = idSubCategoria;
+    }
+    public SubCategoria(String categoria, String nombre, String descripcion, String fotoUrl) {
+        this.Categoria = categoria;
+        this.Nombre = nombre;
+        this.Descripcion = descripcion;
+        this.FotoUrl = fotoUrl;
     }
 
     public String getCategoria() {

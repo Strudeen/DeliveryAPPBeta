@@ -11,7 +11,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShopActivity"></activity>
+        <activity android:name=".SearchActivity"></activity>
+        <activity
+            android:name=".UI.ProductosDialogActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/AppDialogTheme" />
+        <activity
+            android:name=".UI.SubCategoriasDialog"
+            android:excludeFromRecents="true"
+            android:theme="@style/AppDialogTheme" />
+        <activity
+            android:name=".UI.CategoriasDialogActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/AppDialogTheme" />
+        <activity android:name=".ProductosActivity" />
+        <activity android:name=".ShopActivity" />
         <activity android:name=".SubCategoriasActivity" />
         <activity
             android:name=".SignInActivity"
@@ -24,10 +38,10 @@
         </activity>
         <activity
             android:name=".SignUpActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

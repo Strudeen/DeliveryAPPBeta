@@ -1,19 +1,24 @@
 package com.CriStru.orurodeliveryapp.Models;
 
 public class Categoria {
-    String categoria_id;
-    String Nombre;
-    String Descripcion;
-    String FotoUrl;
+    private String categoria_id;
+    private String Nombre;
+    private String Descripcion;
+    private String FotoUrl;
 
     public Categoria() {
     }
 
-    public Categoria(String categoria_id, String nombre, String descripcion, String fotoUrl) {
+    public Categoria(String categoria_id, String Nombre, String Descripcion, String FotoUrl) {
         this.categoria_id = categoria_id;
-        Nombre = nombre;
-        Descripcion = descripcion;
-        FotoUrl = fotoUrl;
+        this.Nombre = Nombre;
+        this.Descripcion = Descripcion;
+        this.FotoUrl = FotoUrl;
+    }
+    public Categoria(String Nombre, String Descripcion, String FotoUrl) {
+        this.Nombre = Nombre;
+        this.Descripcion = Descripcion;
+        this.FotoUrl = FotoUrl;
     }
 
     public String getCategoria_id() {
@@ -28,23 +33,23 @@ public class Categoria {
         return Nombre;
     }
 
-    public void setNombre(String nombre) {
-        Nombre = nombre;
+    public void setNombre(String Nombre) {
+        this.Nombre = Nombre;
     }
 
     public String getDescripcion() {
         return Descripcion;
     }
 
-    public void setDescripcion(String descripcion) {
-        Descripcion = descripcion;
+    public void setDescripcion(String Descripcion) {
+        this.Descripcion = Descripcion;
     }
 
     public String getFotoUrl() {
         return FotoUrl;
     }
 
-    public void setFotoUrl(String fotoUrl) {
-        FotoUrl = fotoUrl;
+    public void setFotoUrl(String FotoUrl) {
+        this.FotoUrl = FotoUrl;
     }
 }

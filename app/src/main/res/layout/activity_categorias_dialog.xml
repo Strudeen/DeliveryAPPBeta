@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".UI.CategoriasDialogActivity">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".UI.CategoriasDialogActivity">
+            <EditText
+                android:id="@+id/etNombreCategoriasD"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:ems="10"
+                android:hint="Nombre"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/etDescripcionCategoriasD"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etNombreCategoriasD"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="0dp"
+                android:ems="10"
+                android:hint="Decripcion"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/btnCargarImagenCategoriasD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etDescripcionCategoriasD"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="0dp"
+                android:text="Cargar Imagen" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/imageViewFotoCategoriaD"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                tools:ignore="UnknownId">
+
+                <Button
+                    android:id="@+id/btnCancelarCategoriasD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/etNombreFotoD"
+                    android:layout_alignParentStart="true"
+                    android:layout_margin="8dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_weight="0.5"
+                    android:text="Cancelar" />
+
+                <Button
+                    android:id="@+id/btnGuardarCategoriasD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/etNombreFotoD"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="8dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="0.5"
+                    android:text="Guardar" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageViewFotoCategoriaD"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                tools:srcCompat="@tools:sample/avatars"
+                android:layout_below="@+id/btnCargarImagenCategoriasD"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"/>
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:elevation="2dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+    </ScrollView>
+

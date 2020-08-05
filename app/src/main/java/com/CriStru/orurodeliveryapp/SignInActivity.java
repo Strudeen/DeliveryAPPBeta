@@ -60,7 +60,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private FirebaseAuth.AuthStateListener authStateListener;
     private AccessTokenTracker accessTokenTracker;
     private static final String TAG = "FacebookAuthenticaion";
-    private ProgressBar progressBar;
+    private ProgressBar progressBar,progressBarUpdate;
     private SignInButton signInButton;
     private GoogleSignInClient mGoogleSignInClient;
 
@@ -144,18 +144,18 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     if (task.isSuccessful()){
                         Log.d(TAG, "Sign in with Credential: Succesful!");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        updateUI(user) ;
+                        if(user != null){
+                            progressBarUpdate.setVisibility(View.VISIBLE);
+                            updateUI(user);}
+                        progressBar.setVisibility(View.GONE );
                     }else {
                         Log.d(TAG, "Sign in with Credential: Failure!" + task.getException());
                         Toast.makeText(SignInActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
                         updateUI(null);
+                        progressBar.setVisibility(View.GONE );
                     }
-                    progressBar.setVisibility(View.GONE );
-
                 }
             });
-
-
     }
 
 
@@ -219,13 +219,14 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void updateUI(FirebaseUser currentUser) {
+        progressBarUpdate.setVisibility(View.VISIBLE);
         if (currentUser != null){
-
             Intent main=new Intent(SignInActivity.this,MainActivity.class);
             startActivity(main);
+            progressBarUpdate.setVisibility(View.GONE);
         }
         else {
-
+            progressBarUpdate.setVisibility(View.GONE);
         }
     }
     private void setUpView() {
@@ -238,6 +239,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         progressBar = findViewById(R.id.progressBar);
         mAuth=FirebaseAuth.getInstance();
         btnRegistrarse=findViewById(R.id.btnRegistrarse);
+        progressBarUpdate=findViewById(R.id.progresUpdateUI);
         btnRegistrarse.setOnClickListener(this);
         btningresar.setOnClickListener(this);
         signInButton.setOnClickListener(this);
