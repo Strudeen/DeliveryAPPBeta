@@ -42,6 +42,24 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/shopFloating_Button"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_shopitem"
+            android:tint="@color/colorWhiter"
+            app:fabSize="normal"
+            android:backgroundTint="@color/colorPrimary" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
     <com.google.android.material.navigation.NavigationView
         app:headerLayout="@layout/header"
         android:id="@+id/navView"

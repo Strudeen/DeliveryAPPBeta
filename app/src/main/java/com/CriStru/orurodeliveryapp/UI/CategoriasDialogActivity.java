@@ -43,7 +43,7 @@ public class CategoriasDialogActivity extends AppCompatActivity {
     private StorageReference mStorage;
     private DatabaseReference mDatabase;
     private Bundle extras;
-    private String idCategoria,fotoUrl;
+    private String idCategoria="",fotoUrl;
     private boolean changeFoto;
     private ProgressBar mProgresDialog;
     private Uri mImageUri;

@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.CriStru.orurodeliveryapp.Adapters.Productos.ProductosAdapter;
 import com.CriStru.orurodeliveryapp.Models.Producto;
@@ -91,11 +94,11 @@ public class SearchActivity extends AppCompatActivity {
             for (Producto obj : list) {
                 if (obj.getNombre().toLowerCase().contains(s.toLowerCase())){
                     milista.add(obj);
+                    Log.d("IDProducto"," "+milista.get(0).getIdProducto());
                 }
             }
             ProductosAdapter productosAdapter = new ProductosAdapter(R.layout.productos_card,milista,getApplicationContext());
             rv.setAdapter(productosAdapter);
         }
-
     }
 }

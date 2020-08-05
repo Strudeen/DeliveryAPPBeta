@@ -25,6 +25,7 @@ import com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport;
 import com.CriStru.orurodeliveryapp.Models.Categoria;
 import com.CriStru.orurodeliveryapp.UI.CategoriasDialogActivity;
 import com.facebook.login.LoginManager;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,11 +42,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
-
+    private TextView txtUserName;
 
     private DatabaseReference dbOruro;
     private FirebaseAuth mAuth;
     private NavigationView mNavigationView;
+    private FloatingActionButton mShopAction;
     private CategoriasAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private ArrayList<Categoria> categoriaList = new ArrayList<>();
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         setContentView(R.layout.activity_main);
         mDrawerLayout = findViewById(R.id.drawer);
         mNavigationView = findViewById(R.id.navView);
+        mShopAction = findViewById(R.id.shopFloating_Button);
         mToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(mToolbar);
 
@@ -65,11 +68,21 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         }
 
 
+        mShopAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goShopScreen();
+            }
+        });
+
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable menuIcon = getResources().getDrawable(R.drawable.ic_menu);
+        View headerView = mNavigationView.getHeaderView(0);
+        TextView txtUserName = (TextView) headerView.findViewById(R.id.name_user);
+        TextView txtUserEmail = headerView.findViewById(R.id.email_user);
         menuIcon.setColorFilter(getResources().getColor(R.color.colorWhiter), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(menuIcon);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -97,7 +110,10 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String name = user.getDisplayName();
+            mToolbar.setTitle("Bienvenido " + name);
+            txtUserName.setText(name);
             String email = user.getEmail();
+            txtUserEmail.setText(email);
             Uri photo = user.getPhotoUrl();
             String Uid = user.getUid();
         } else {
