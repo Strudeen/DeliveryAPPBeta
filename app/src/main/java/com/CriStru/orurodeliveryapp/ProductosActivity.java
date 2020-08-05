@@ -57,8 +57,8 @@ public class ProductosActivity extends AppCompatActivity {
                 if (dataSnapshot != null) {
                     tvNombre.setText(dataSnapshot.child("nombre").getValue().toString());
                     tvDescripcion.setText(dataSnapshot.child("descripcion").getValue().toString());
-                    tvPrecio.setText(dataSnapshot.child("precio").getValue().toString() + " Bs");
-                    tvStock.setText("Stock: " + dataSnapshot.child("stock").getValue().toString());
+                    tvPrecio.setText(Float.parseFloat(dataSnapshot.child("precio").getValue().toString()) + " Bs");
+                    tvStock.setText("Stock: " + Integer.parseInt(dataSnapshot.child("stock").getValue().toString()));
                     Glide.with(ProductosActivity.this).load(dataSnapshot.child("fotoUrl").getValue().toString()).into(photoProduct);
                     String id=dataSnapshot.child("subCategoria").getValue().toString();
                     mDatabaseReference.child("SubCategorias").child(id).addValueEventListener(new ValueEventListener() {

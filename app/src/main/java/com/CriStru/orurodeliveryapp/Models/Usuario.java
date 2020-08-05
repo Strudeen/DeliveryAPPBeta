@@ -2,7 +2,6 @@ package com.CriStru.orurodeliveryapp.Models;
 
 public class Usuario {
     String nombre;
-    String apellido;
     String celular;
 
     public Usuario() {
@@ -10,10 +9,13 @@ public class Usuario {
 
     String tipo;
 
-    public Usuario(String nombre, String apellido, String celular, String tipo) {
+    public Usuario(String nombre, String celular, String tipo) {
         this.nombre = nombre;
-        this.apellido = apellido;
         this.celular = celular;
+        this.tipo = tipo;
+    }
+    public Usuario(String nombre, String tipo) {
+        this.nombre = nombre;
         this.tipo = tipo;
     }
 
@@ -23,14 +25,6 @@ public class Usuario {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
     }
 
     public String getCelular() {

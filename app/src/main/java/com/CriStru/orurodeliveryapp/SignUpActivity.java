@@ -194,7 +194,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         progressBarSignUp.setVisibility(View.INVISIBLE);
                     }
                     else {
-                        Usuario usuario=new Usuario(etNombre.getText().toString(),etApellido.getText().toString(), etCel.getText().toString(),"USR");
+                        Usuario usuario=new Usuario(etNombre.getText().toString()+" "+etApellido.getText().toString(), etCel.getText().toString(),"USR");
                         tableUsuario.child(Uid).setValue(usuario);
                         updateUI(currentUser);
                         progressBarSignUp.setVisibility(View.INVISIBLE);

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.CriStru.orurodeliveryapp.Models.Usuario;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.FacebookCallback;
@@ -45,6 +46,12 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
@@ -52,6 +59,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     Button btningresar,btnRegistrarse;
     EditText etEmail,etContraseña;
     private TextView textViewUser;
+    private String emailx = "";
 
     private final int RC_SIGN_IN = 1;
     private LoginButton loginButton;
@@ -183,6 +191,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+
+                emailx = account.getEmail().toString();
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -197,6 +207,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     }
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        progressBarUpdate.setVisibility(View.VISIBLE);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -205,6 +216,40 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Log.d("email", " " + user.getEmail());
+
+                            user.updateEmail(emailx).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d("Datos Login", " " + user.getDisplayName() + " " + user.getEmail());
+                                     }
+                                    }
+                                });
+                            final String Uid= user.getUid();
+                            FirebaseDatabase database=FirebaseDatabase.getInstance();
+                            final DatabaseReference tableUsuario=database.getReference().child("Usuario");
+                            tableUsuario.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                    if (dataSnapshot.child(Uid).exists()){
+                                        Toast.makeText(SignInActivity.this,"El usuario ya esta registrado",Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.INVISIBLE);
+                                    }
+                                    else {
+                                        Usuario usuario = new Usuario(user.getDisplayName(),"USR");
+                                        tableUsuario.child(Uid).setValue(usuario);
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                            progressBarUpdate.setVisibility(View.GONE);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

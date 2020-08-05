@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
-    private TextView txtUserName;
+    private TextView txtUserName, txtUserEmail, txtTypeUser;
 
     private DatabaseReference dbOruro;
     private FirebaseAuth mAuth;
@@ -81,8 +81,9 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable menuIcon = getResources().getDrawable(R.drawable.ic_menu);
         View headerView = mNavigationView.getHeaderView(0);
-        TextView txtUserName = (TextView) headerView.findViewById(R.id.name_user);
-        TextView txtUserEmail = headerView.findViewById(R.id.email_user);
+        txtUserName = (TextView) headerView.findViewById(R.id.name_user);
+        txtUserEmail = headerView.findViewById(R.id.email_user);
+        txtTypeUser = headerView.findViewById(R.id.type_user);
         menuIcon.setColorFilter(getResources().getColor(R.color.colorWhiter), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(menuIcon);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -107,18 +108,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             }
         });
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            String name = user.getDisplayName();
-            mToolbar.setTitle("Bienvenido " + name);
-            txtUserName.setText(name);
-            String email = user.getEmail();
-            txtUserEmail.setText(email);
-            Uri photo = user.getPhotoUrl();
-            String Uid = user.getUid();
-        } else {
-            goLoginScreen();
-        }
+
         getCategoriasFromFirebase();
     }
 
@@ -147,6 +137,22 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String[] name = user.getDisplayName().split(" ");
+            String name1 = user.getDisplayName();
+            mToolbar.setTitle("Bienvenido " + name[0] + "!");
+            txtUserName.setText(name1);
+            String email = user.getEmail();
+            txtUserEmail.setText(email);
+        } else {
+            goLoginScreen();
+        }
     }
 
     public void logout() {
@@ -181,6 +187,36 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_superior_icons, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem menuItem = menu.findItem(R.id.add);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        dbOruro.child("Usuario").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    if (dataSnapshot.child("tipo").getValue().toString().equals("USR")){
+                        menuItem.setVisible(false);
+                        txtTypeUser.setText("Cliente");
+                        menuItem.setEnabled(false);
+                    }
+                    else if (dataSnapshot.child("tipo").getValue().toString().equals("ADM")){
+                        menuItem.setVisible(true);
+                        txtTypeUser.setText("Administrador");
+                        menuItem.setEnabled(true);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         return true;
     }
 

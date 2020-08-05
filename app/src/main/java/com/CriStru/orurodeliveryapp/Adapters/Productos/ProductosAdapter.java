@@ -2,6 +2,7 @@ package com.CriStru.orurodeliveryapp.Adapters.Productos;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,13 @@ import com.CriStru.orurodeliveryapp.R;
 import com.CriStru.orurodeliveryapp.UI.ProductosDialogActivity;
 import com.CriStru.orurodeliveryapp.UI.SubCategoriasDialog;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -58,6 +66,10 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.View
         TextView tvNombre,tvPrecio,tvIdProducto,tvStock;
         ImageView imageViewProducto,editarProducto;
         View view;
+        public DatabaseReference mDatabase;
+        public FirebaseAuth mAuth;
+        public FirebaseUser mUser;
+        private String tipo="";
         public ViewHolder(View view){
             super(view);
             this.view = view;
@@ -68,6 +80,32 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.View
             this.imageViewProducto=(ImageView) view.findViewById(R.id.imageViewProductosCard);
             this.editarProducto = (ImageView) view.findViewById(R.id.editarProducto);
             this.editarProducto.setOnClickListener(this);
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("Usuario");
+            mAuth = FirebaseAuth.getInstance();
+            mUser = mAuth.getCurrentUser();
+            mDatabase.child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        tipo=dataSnapshot.child("tipo").getValue().toString();
+                        Log.d("TIPO",tipo);
+                        if (tipo.equals("USR")){
+                            Log.d("TIPO",tipo);
+                            editarProducto.setVisibility(View.GONE);
+                            editarProducto.setEnabled(false);
+                        }
+                        else if (tipo.equals("ADM")){
+                            editarProducto.setVisibility(View.VISIBLE);
+                            editarProducto.setEnabled(true);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
 
         @Override
