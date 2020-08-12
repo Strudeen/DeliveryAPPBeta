@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.CriStru.orurodeliveryapp.Models.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +35,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     Button btnRegistrarse;
     ProgressBar progressBarSignUp;
     private FirebaseAuth mAuth;
+    private String DisplayName="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +80,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null){
             Intent main=new Intent(SignUpActivity.this,MainActivity.class);
+            //main.putExtra("DisplayName",etNombre.getText().toString()+" "+etApellido.getText().toString());
+            Log.d("Sucess",currentUser.getDisplayName());
             startActivity(main);
         }
         else {
@@ -154,18 +158,23 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Log.d("Success", "DisplayName"+user.getDisplayName());
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(etNombre.getText().toString() +" "+ etApellido.getText().toString()).build();
-                            user.updateProfile(profileUpdates);
+                            user.updateProfile(profileUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d("Success", "DisplayName"+user.getDisplayName());
+                                    DisplayName = user.getDisplayName();
+                                    Log.d("Success", "createUserWithEmail:success");
+                                    SaveDataUser(user);
+                                    //sendEmailVerification(user);
+                                    Log.d("Success", "Email Verification");
+                                    progressBarSignUp.setVisibility(View.INVISIBLE);
+                                    updateUI(user);
+                                }
+                            });
 
-
-                            progressBarSignUp.setVisibility(View.INVISIBLE);
-                            Log.d("Success", "createUserWithEmail:success");
-                            SaveDataUser(user);
-                            Log.d("Success", "Save user data");
-                            //sendEmailVerification(user);
-                            Log.d("Success", "Email Verification");
-                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("Error", "createUserWithEmail:failure", task.getException());
@@ -181,11 +190,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void SaveDataUser(final FirebaseUser currentUser){
-        progressBarSignUp.setVisibility(View.VISIBLE);
         if (currentUser!=null){
             final String Uid=currentUser.getUid();
             FirebaseDatabase database=FirebaseDatabase.getInstance();
-            final DatabaseReference tableUsuario=database.getReference().child("Usuario");
+            DatabaseReference tableUsuario=database.getReference().child("Usuario");
             tableUsuario.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -196,11 +204,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     else {
                         Usuario usuario=new Usuario(etNombre.getText().toString()+" "+etApellido.getText().toString(), etCel.getText().toString(),"USR");
                         tableUsuario.child(Uid).setValue(usuario);
-                        updateUI(currentUser);
-                        progressBarSignUp.setVisibility(View.INVISIBLE);
+                        Log.d("Success", "Save user data");
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 

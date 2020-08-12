@@ -2,11 +2,14 @@ package com.CriStru.orurodeliveryapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -57,6 +60,20 @@ public class SubCategoriasActivity extends AppCompatActivity {
         mDataBase=FirebaseDatabase.getInstance().getReference();
         tvNombreCategoria=findViewById(R.id.tvNombreCategoriaSub);
         extras=getIntent().getExtras();
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbarSubcat);
+        setSupportActionBar(myToolbar);
+        final Drawable menuIcon = getResources().getDrawable(R.drawable.ic_back);
+        menuIcon.setColorFilter(getResources().getColor(R.color.colorWhiter), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(menuIcon);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        myToolbar.setTitle("Subcategorias");
+        myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         if (extras.getString("idCategoria")!=null){
             idCategoria=extras.getString("idCategoria");
             Log.d("idCategoria",idCategoria);
@@ -140,7 +157,6 @@ public class SubCategoriasActivity extends AppCompatActivity {
 
             }
         });
-
        return true;
     }
 

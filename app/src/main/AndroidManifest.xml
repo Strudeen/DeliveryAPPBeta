@@ -11,6 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data android:name="DATABASE" android:value="bamboo_database.db" />
+        <meta-data android:name="VERSION" android:value="1" />
+        <meta-data android:name="QUERY_LOG" android:value="true" />
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.CriStru.orurodeliveryapp" />
         <activity android:name=".SearchActivity"></activity>
         <activity
             android:name=".UI.ProductosDialogActivity"
@@ -26,10 +30,11 @@
             android:theme="@style/AppDialogTheme" />
         <activity android:name=".ProductosActivity" />
         <activity android:name=".ShopActivity" />
-        <activity android:name=".SubCategoriasActivity" />
+        <activity android:name=".SubCategoriasActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".SignInActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

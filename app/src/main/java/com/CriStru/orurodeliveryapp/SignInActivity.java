@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.SigningInfo;
 import android.net.wifi.hotspot2.pps.Credential;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +30,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
 import com.facebook.CallbackManager;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -56,28 +58,27 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Arrays;
 
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
-    Button btningresar,btnRegistrarse;
+    Button btningresar,btnRegistrarse, signInButton, loginButton ;
     EditText etEmail,etContraseña;
     private TextView textViewUser;
     private String emailx = "";
 
     private final int RC_SIGN_IN = 1;
-    private LoginButton loginButton;
+   // private LoginButton loginButton;
     private CallbackManager mCallbackManager;
     private FirebaseAuth mAuth;
+    private LoginManager loginManager;
     private FirebaseAuth.AuthStateListener authStateListener;
     private AccessTokenTracker accessTokenTracker;
     private static final String TAG = "FacebookAuthenticaion";
     private ProgressBar progressBar,progressBarUpdate;
-    private SignInButton signInButton;
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.Theme_AppCompat_DayNight_NoActionBar);
+        setTheme(R.style.Theme_AppCompat_Light_NoActionBar);
         setContentView(R.layout.activity_sign_in);
-
         setUpView();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -92,10 +93,12 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         FacebookSdk.sdkInitialize(getApplicationContext());
 
 
+
+
         mCallbackManager = CallbackManager.Factory.create();
-
-        loginButton.setReadPermissions("email", "public_profile");
-
+        //loginButton.setLoginText("Entrar con Facebook");
+      //  loginButton.setReadPermissions("email", "public_profile");
+/*
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
@@ -115,7 +118,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
-
+*/
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -184,13 +187,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+                Log.d("Authsd", "firebaseAuthWithGoogle:" + account.getId());
 
                 emailx = account.getEmail().toString();
                 firebaseAuthWithGoogle(account.getIdToken());
@@ -200,10 +203,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 // ...
             }
         }
-
-
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
+
     }
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
@@ -267,6 +268,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         progressBarUpdate.setVisibility(View.VISIBLE);
         if (currentUser != null){
             Intent main=new Intent(SignInActivity.this,MainActivity.class);
+
             startActivity(main);
             progressBarUpdate.setVisibility(View.GONE);
         }
@@ -290,6 +292,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         signInButton.setOnClickListener(this);
     }
     private void SignIn(String email,String password){
+        if (!ValidateForm()) {
+            return;
+        }
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -300,7 +305,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user
-                            Toast.makeText(SignInActivity.this, "Authentication failed.",
+                            Toast.makeText(SignInActivity.this, "Datos Incorrectos",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                             // ...
@@ -321,6 +326,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnIngresarSignIn:
+                ValidateForm();
                 SignIn(etEmail.getText().toString(),etContraseña.getText().toString());
                 break;
             case R.id.signin_button:
@@ -331,6 +337,25 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 startActivity(intent);
                 break;
         }
+    }
+
+    public boolean ValidateForm() {
+        boolean valid = true;
+        String email=etEmail.getText().toString();
+        if (TextUtils.isEmpty(email)){
+            etEmail.setError("Este campo es obligatorio");
+            valid=false;
+        }else {
+            etEmail.setError(null);
+        }
+        String password = etContraseña.getText().toString();
+        if (TextUtils.isEmpty(email)){
+            etContraseña.setError("Este campo es obligatorio");
+            valid = false;
+        }else {
+            etEmail.setError(null);
+        }
+        return  valid;
     }
 
 }

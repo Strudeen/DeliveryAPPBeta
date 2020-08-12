@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_marginTop="0dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/mainColor"
             android:elevation="4dp"
             app:titleTextColor="#fff"
             app:navigationIcon="@color/colorWhiter"
@@ -52,10 +52,10 @@
             android:layout_height="55dp"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_shopitem"
+            android:src="@drawable/shop_kart"
             android:tint="@color/colorWhiter"
             app:fabSize="normal"
-            android:backgroundTint="@color/colorPrimary" />
+            android:backgroundTint="@color/mainColor" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -67,7 +67,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:itemTextColor="#000"
-        app:itemIconTint="@color/colorPrimaryDark"
+        app:itemIconTint="@color/mainColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/drawermenu">

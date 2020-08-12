@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.CriStru.orurodeliveryapp.Models.Producto;
 import com.CriStru.orurodeliveryapp.R;
 import com.CriStru.orurodeliveryapp.UI.ProductosDialogActivity;
-import com.CriStru.orurodeliveryapp.UI.SubCategoriasDialog;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -74,7 +72,7 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.View
             super(view);
             this.view = view;
             this.tvIdProducto=(TextView) view.findViewById(R.id.tvIdProducto);
-            this.tvNombre=(TextView) view.findViewById(R.id.tvNombreProductoCard);
+            this.tvNombre=(TextView) view.findViewById(R.id.tvNombreCarritoCard);
             this.tvPrecio=(TextView) view.findViewById(R.id.tvPrecioCard);
             this.tvStock=(TextView) view.findViewById(R.id.tvStockCard);
             this.imageViewProducto=(ImageView) view.findViewById(R.id.imageViewProductosCard);
@@ -93,10 +91,12 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.View
                             Log.d("TIPO",tipo);
                             editarProducto.setVisibility(View.GONE);
                             editarProducto.setEnabled(false);
+                            editarProducto.setClickable(false);
                         }
                         else if (tipo.equals("ADM")){
                             editarProducto.setVisibility(View.VISIBLE);
                             editarProducto.setEnabled(true);
+                            editarProducto.setClickable(true);
                         }
                     }
                 }

@@ -94,11 +94,13 @@ public class SubCategoriasAdapter extends RecyclerView.Adapter<SubCategoriasAdap
                          Log.d("TIPO", tipo);
                          editSubCategoria.setVisibility(View.VISIBLE);
                         editSubCategoria.setEnabled(true);
+                         editSubCategoria.setClickable(true);
                      }
                      else if (tipo.equals("USR")){
                          Log.d("Tipo", tipo);
                          editSubCategoria.setVisibility(View.GONE);
                          editSubCategoria.setEnabled(false);
+                         editSubCategoria.setClickable(false);
                      }
                  }
                 }

@@ -8,6 +8,7 @@
     <item android:id="@+id/add"
         android:icon="@drawable/ic_add_white"
         android:title="Añadir"
+        android:visible="false"
         app:showAsAction="ifRoom">
     </item>
 </menu>

@@ -142,12 +142,25 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     @Override
     protected void onStart() {
         super.onStart();
+       // Bundle extras=getIntent().getExtras();
+        String[] name ={""};
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         if (user != null) {
-            String[] name = user.getDisplayName().split(" ");
-            String name1 = user.getDisplayName();
-            mToolbar.setTitle("Bienvenido " + name[0] + "!");
-            txtUserName.setText(name1);
+            if (user.getDisplayName() != null){
+                name = user.getDisplayName().split(" ");
+                mToolbar.setTitle("¡Bienvenido " + name[0] + "!");
+                String name1 = user.getDisplayName();
+                txtUserName.setText(name1);
+            }
+            else {/*
+                if (!extras.getString("DisplayName").equals("")){
+                    name = extras.getString("DisplayName").split(" ");
+                    mToolbar.setTitle("Bienvenido " + name[0] + "!");
+                    String name1 = extras.getString("DisplayName");
+                    txtUserName.setText(name1);
+                }*/
+            }
             String email = user.getEmail();
             txtUserEmail.setText(email);
         } else {
@@ -168,7 +181,6 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     }
     private void goShopScreen(){
         Intent intent = new Intent(MainActivity.this, ShopActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

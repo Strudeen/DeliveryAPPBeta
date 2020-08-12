@@ -91,10 +91,12 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
                             Log.d("TIPO",tipo);
                             editCategoriaCard.setVisibility(View.GONE);
                             editCategoriaCard.setEnabled(false);
+                            editCategoriaCard.setClickable(false);
                         }
                         else if (tipo.equals("ADM")){
                             editCategoriaCard.setVisibility(View.VISIBLE);
                             editCategoriaCard.setEnabled(true);
+                            editCategoriaCard.setClickable(true);
                         }
                     }
                 }

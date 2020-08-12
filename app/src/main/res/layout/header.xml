@@ -3,19 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="160dp"
-    android:background="@drawable/bg">
-    
+    android:layout_height="200dp"
+    android:background="@color/mainColor">
+
     <ImageView
-        android:src="@drawable/ic_user"
+        android:layout_marginTop="24dp"
         android:id="@+id/image_user"
         android:layout_width="75dp"
-
         android:layout_height="75dp"
-        android:layout_marginLeft="13dp">
+        android:layout_gravity="center"
+        android:layout_marginLeft="13dp"
+        android:background="@drawable/iconbambooblanco">
 
     </ImageView>
-    
+
     <TextView
         android:id="@+id/name_user"
         android:layout_width="wrap_content"

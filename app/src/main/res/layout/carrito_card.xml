@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvNombreCarritoCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@+id/imageViewProductosCard"
+            android:text="Leche Pil "
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/imageViewCarritoCard"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageViewCarritoCard"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentBottom="true"
+            android:maxWidth="128dp"
+            android:maxHeight="128dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tvPrecioCarritoCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="8.00 bs"
+            android:textColor="#4CAF50"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/imageViewCarritoCard"
+            app:layout_constraintTop_toBottomOf="@+id/tvStockCarritoCard" />
+
+        <TextView
+            android:id="@+id/tvStockCarritoCard"
+            android:layout_width="wrap_content"
+            android:layout_height="22sp"
+            android:layout_below="@+id/tvPrecioCard"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="false"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Stock: 20"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/imageViewCarritoCard"
+            app:layout_constraintTop_toBottomOf="@+id/tvNombreCarritoCard" />
+
+        <TextView
+            android:id="@+id/tvIdCarrito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewCarritoCard"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewCarritoCard"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/decrementar_button"
+            android:layout_width="44dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="-"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvMaxStockCarritoCard" />
+
+        <Button
+            android:id="@+id/incrementar_button"
+            android:layout_width="44dp"
+            android:layout_height="42dp"
+            android:layout_marginBottom="8dp"
+            android:text="+"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/decrementar_button"
+            app:layout_constraintStart_toEndOf="@+id/tvPrecioCarritoCard" />
+
+        <TextView
+            android:id="@+id/tvMaxStockCarritoCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="Cantidad Actual"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvStockCarritoCard"
+            app:layout_constraintTop_toBottomOf="@+id/borrar_button" />
+
+        <Button
+            android:id="@+id/borrar_button"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="X"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvNombreCarritoCard"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
