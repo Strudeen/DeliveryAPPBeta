@@ -53,13 +53,18 @@ dependencies {
     implementation 'com.google.gms:google-services:4.3.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.1.0'
+    implementation "com.google.android.gms:play-services-location:17.0.0"
     implementation 'androidx.navigation:navigation-fragment:2.3.0'
     implementation 'androidx.navigation:navigation-ui:2.3.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     //Firebase cloud firestorage
     implementation 'com.google.firebase:firebase-storage:19.1.1'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    //DiscreteSlider
+    implementation 'com.yarolegovich:discrete-scrollview:1.5.1'
 
     //Sugar orm Local Database
     implementation 'com.github.satyan:sugar:1.5'

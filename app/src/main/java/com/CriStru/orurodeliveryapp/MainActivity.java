@@ -13,15 +13,19 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.CriStru.orurodeliveryapp.Adapters.Categorias.CategoriasAdapter;
 import com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport;
+import com.CriStru.orurodeliveryapp.Adapters.Scroll.AdapterScroll;
+import com.CriStru.orurodeliveryapp.Adapters.Scroll.Promociones;
 import com.CriStru.orurodeliveryapp.Models.Categoria;
 import com.CriStru.orurodeliveryapp.UI.CategoriasDialogActivity;
 import com.facebook.login.LoginManager;
@@ -34,6 +38,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import java.util.ArrayList;
 
@@ -51,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     private CategoriasAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private ArrayList<Categoria> categoriaList = new ArrayList<>();
+    private ArrayList<Promociones> promocionesArrayList = new ArrayList<>();
+    private DiscreteScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         mShopAction = findViewById(R.id.shopFloating_Button);
         mToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(mToolbar);
+
+        scrollView = findViewById(R.id.picker);
+        scrollView.setMinimumHeight(pxToDp(1440));
 
 
         if (mNavigationView != null) {
@@ -113,6 +123,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     }
 
 
+    public int pxToDp(int px) {
+        DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
+        return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
     public void getCategoriasFromFirebase() {
         dbOruro.child("Categorias").addValueEventListener(new ValueEventListener() {
             @Override
@@ -126,9 +141,15 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                         String FotoUrl = ds.child("fotoUrl").getValue().toString();
                         String id = ds.getKey();
                         categoriaList.add(new Categoria(id, Nombre, Descripcion, FotoUrl));
+                        promocionesArrayList.add(new Promociones(id,FotoUrl));
                     }
                     mAdapter = new CategoriasAdapter(categoriaList, R.layout.categorias_card, getApplicationContext());
                     mRecyclerView.setAdapter(mAdapter);
+
+                    AdapterScroll scroll= new AdapterScroll(promocionesArrayList,R.layout.itemscroll_card, getApplicationContext());
+                    scrollView.setAdapter(scroll);
+                 //   scrollView.setItemTransitionTimeMillis();
+
                 }
             }
 

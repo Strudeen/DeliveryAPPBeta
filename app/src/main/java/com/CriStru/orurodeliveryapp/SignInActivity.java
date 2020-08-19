@@ -62,6 +62,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     EditText etEmail,etContraseña;
     private TextView textViewUser;
     private String emailx = "";
+    private  Button facebookLogin;
 
     private final int RC_SIGN_IN = 1;
    // private LoginButton loginButton;
@@ -90,35 +91,34 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
 
         mAuth = FirebaseAuth.getInstance();
-        FacebookSdk.sdkInitialize(getApplicationContext());
-
-
-
-
         mCallbackManager = CallbackManager.Factory.create();
-        //loginButton.setLoginText("Entrar con Facebook");
-      //  loginButton.setReadPermissions("email", "public_profile");
-/*
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 
+        facebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "Success!");
-                handleTokenFacebook(loginResult.getAccessToken());
-            }
+            public void onClick(View view) {
+                LoginManager.getInstance().logInWithReadPermissions(SignInActivity.this,Arrays.asList("email", "public_profile"));
+                LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Log.d("djvbdfjbv", "facebook:onSuccess:" + loginResult);
+                        handleTokenFacebook(loginResult.getAccessToken());
+                    }
 
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "Cancel!");
-            }
+                    @Override
+                    public void onCancel() {
+                        Toast.makeText(SignInActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
+                    }
 
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG, "Error!" + error);
+                    @Override
+                    public void onError(FacebookException error) {
+                        Toast.makeText(SignInActivity.this, "Error " + error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
 
-*/
+
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -142,31 +142,29 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void handleTokenFacebook(AccessToken accessToken) {
+    private void handleTokenFacebook(AccessToken token) {
 
-        progressBar.setVisibility(View.VISIBLE);
+        Log.d("smdbcdbsc", "handleFacebookAccessToken:" + token);
 
-        Log.d(TAG, "handleTokenFacebook" + accessToken);
-
-            AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
-            mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()){
-                        Log.d(TAG, "Sign in with Credential: Succesful!");
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if(user != null){
-                            progressBarUpdate.setVisibility(View.VISIBLE);
-                            updateUI(user);}
-                        progressBar.setVisibility(View.GONE );
-                    }else {
-                        Log.d(TAG, "Sign in with Credential: Failure!" + task.getException());
-                        Toast.makeText(SignInActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-                        updateUI(null);
-                        progressBar.setVisibility(View.GONE );
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("smdbcdbsc", "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("smdbcdbsc", "signInWithCredential:failure", task.getException());
+                            Toast.makeText(SignInActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // ...
                     }
-                }
-            });
+                });
     }
 
 
@@ -280,7 +278,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         btningresar=findViewById(R.id.btnIngresarSignIn);
 
         signInButton = findViewById(R.id.signin_button);
-        loginButton = findViewById(R.id.login_button);
+        facebookLogin = findViewById(R.id.login_button);
         etEmail=findViewById(R.id.etEmailSignIn);
         etContraseña=findViewById(R.id.etContraseñaSignIn);
         progressBar = findViewById(R.id.progressBar);

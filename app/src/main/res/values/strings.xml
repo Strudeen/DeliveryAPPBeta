@@ -2,7 +2,8 @@
     <string name="app_name">Bamboo Store</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="facebook_app_id">914385579066319</string>
-    <string name="fb_login_protocol_scheme">fb914385579066319</string>
+    <string name="facebook_app_id">1517675401744966</string>
+    <string name="fb_login_protocol_scheme">fb1517675401744966</string>
     <string name="button_facebook">Ingresar con Facebook</string>
+    <string name="title_activity_maps_pedido">Map</string>
 </resources>

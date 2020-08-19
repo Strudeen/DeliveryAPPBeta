@@ -27,6 +27,13 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
+        <com.yarolegovich.discretescrollview.DiscreteScrollView
+            android:id="@+id/picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
+            app:dsv_orientation="horizontal" />
+
 
         <androidx.recyclerview.widget.RecyclerView
 
@@ -37,7 +44,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
+            app:layout_constraintTop_toBottomOf="@+id/picker"
             tools:listitem="@layout/categorias_card" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
