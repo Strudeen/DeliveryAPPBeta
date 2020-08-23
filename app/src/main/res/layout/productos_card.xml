@@ -21,6 +21,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_toStartOf="@+id/tvStockCard"
             android:layout_toEndOf="@+id/imageViewProductosCard"
             android:text="Leche Pil "
             android:textSize="24sp" />
