@@ -27,12 +27,29 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <com.yarolegovich.discretescrollview.DiscreteScrollView
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabDots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/picker"
+            app:tabBackground="@drawable/tab_selector"
+            android:layout_margin="0dp"
+            app:tabIndicator="@drawable/tab_indicator_default"
+            app:tabIndicatorGravity="center"
+            app:tabGravity="center"/>
+
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/picker"
             android:layout_width="match_parent"
+            android:layout_margin="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
-            app:dsv_orientation="horizontal" />
+            app:dsv_orientation="horizontal"
+            android:background="@color/colorWhiter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -42,9 +59,9 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            android:background="@color/backgroundColor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/picker"
+            app:layout_constraintTop_toBottomOf="@+id/tabDots"
             tools:listitem="@layout/categorias_card" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -54,7 +71,7 @@
         android:layout_height="match_parent"
         >
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/shopFloating_Button"
+            android:id="@+id/shopFloating_Button3"
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_gravity="end|bottom"
