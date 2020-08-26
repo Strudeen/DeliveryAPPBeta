@@ -94,6 +94,7 @@ public class ShopActivity extends AppCompatActivity implements DataTransferInter
                 Intent intent = new Intent(ShopActivity.this, FormPedidoActivity.class);
                 intent.putExtra("preciototal", tvprecioTotal.getText().toString());
                 intent.putExtra("direccion", "");
+                intent.putExtra("idUbicacion","");
                 startActivity(intent);
                 return true;
             default:

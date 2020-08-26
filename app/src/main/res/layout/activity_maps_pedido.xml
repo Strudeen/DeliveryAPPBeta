@@ -26,8 +26,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:background="@color/mainColor"
-        android:textColor="@color/colorWhiter"
         android:text="Confirmar Dirección"
+        android:textColor="@color/colorWhiter"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent" />
@@ -40,7 +40,7 @@
         android:text="Indica tu ubicacion de entrega para un mejor servicio."
         android:textAlignment="center"
         android:textColor="#003c5a"
-        map:layout_constraintBottom_toTopOf="@+id/confirmar_dir_btn"
+        map:layout_constraintBottom_toTopOf="@+id/editTextNombreUbicacion"
         map:layout_constraintEnd_toEndOf="parent"
 
         map:layout_constraintStart_toStartOf="parent" />
@@ -66,5 +66,20 @@
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toTopOf="@+id/map" />
+
+    <EditText
+        android:id="@+id/editTextNombreUbicacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:hint="Nombre del Sitio"
+        android:inputType="textPersonName"
+        map:layout_constraintBottom_toTopOf="@+id/confirmar_dir_btn"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintHorizontal_bias="0.1"
+        map:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,12 +27,13 @@ import java.util.List;
 
 public class FormPedidoActivity extends AppCompatActivity {
 
-    private Button buscarbtn ,confirmar;
+    private Button buscarbtn ,confirmar, direccionesguardadas_btn;
     private Bundle localizacion;
     private TextView confirmaciontxt;
     private DatabaseReference mDatabaseReference;
+    private Double latitude=0d, longitude=0d;
     private EditText direcciontxt, referenciadirtxt, numeroreftxt;
-    private String preciototal="";
+    private String preciototal="", nombreUbicacion="";
     SharedPreferences.Editor myEditor;
     SharedPreferences sharedPref;
 
@@ -44,6 +45,8 @@ public class FormPedidoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_form_pedido);
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         myEditor = sharedPref.edit();
+
+        direccionesguardadas_btn = findViewById(R.id.direcciones_btn);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         confirmar = findViewById(R.id.confirmar_btn);
@@ -79,6 +82,17 @@ public class FormPedidoActivity extends AppCompatActivity {
             }
         });
 
+        direccionesguardadas_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myEditor.putString("direccion", direcciontxt.getText().toString());
+                myEditor.putString("referencia", referenciadirtxt.getText().toString());
+                myEditor.putString("telefono", numeroreftxt.getText().toString());
+                myEditor.commit();
+                Intent intent = new Intent(FormPedidoActivity.this, UbicacionesSavedActivity.class);
+                startActivity(intent);
+            }
+        });
         direcciontxt.setText(sharedPref.getString("direccion", ""));
         referenciadirtxt.setText(sharedPref.getString("referencia", ""));
         numeroreftxt.setText(sharedPref.getString("telefono", ""));
@@ -91,21 +105,36 @@ public class FormPedidoActivity extends AppCompatActivity {
         }
         Log.d("precioTotal",sharedPref.getString("PrecioTotal","0"));
 
-        if (!localizacion.getString("direccion").equals("")) {
-            String[] ubicacion = localizacion.getString("direccion").split(",");
-            Double latitude = Double.parseDouble(ubicacion[0]);
-            Double longitude = Double.parseDouble(ubicacion[1]);
-            Log.d("ubicacion", ""+latitude + "," + longitude);
-            confirmaciontxt.setText("Ubicación agregada correctamente!");
-            confirmaciontxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_success, 0);
-            confirmaciontxt.setTextColor(getResources().getColor(R.color.success));
-            confirmar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    confirmarPedido();
-                }
-            });
+        if (!localizacion.getString("direccion").equals("") || !localizacion.getString("idUbicacion").equals("")) {
+            Log.d("idUbicacion",localizacion.getString("idUbicacion"));
+            if (!localizacion.getString("idUbicacion").equals("")){
 
+                confirmaciontxt.setText("Ubicación agregada correctamente!");
+                confirmaciontxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_success, 0);
+                confirmaciontxt.setTextColor(getResources().getColor(R.color.success));
+                confirmar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        confirmarPedido();
+                    }
+                });
+            }
+            else {
+                String[] ubicacion = localizacion.getString("direccion").split(",");
+                latitude = Double.parseDouble(ubicacion[0]);
+                longitude = Double.parseDouble(ubicacion[1]);
+                nombreUbicacion = ubicacion[2];
+                Log.d("ubicacion", ""+latitude + "," + longitude);
+                confirmaciontxt.setText("Ubicación agregada correctamente!");
+                confirmaciontxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_success, 0);
+                confirmaciontxt.setTextColor(getResources().getColor(R.color.success));
+                confirmar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        confirmarPedido();
+                    }
+                });
+            }
         }
 
         else {
@@ -120,20 +149,33 @@ public class FormPedidoActivity extends AppCompatActivity {
     public void confirmarPedido(){
         Log.d("precioTotal",sharedPref.getString("PrecioTotal","0"));
         String idPedido="";
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Pedidos");
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         List<Carrito> carritos = Carrito.listAll(Carrito.class);
-        idPedido = mDatabaseReference.push().getKey();
+        String idUbicacion = "";
+        if (localizacion.getString("idUbicacion").equals("")){
+            idUbicacion = mDatabaseReference.child("Ubicacion").push().getKey();
+            mDatabaseReference.child("Ubicacion").child(idUbicacion).child("uid").setValue(user.getUid());
+            mDatabaseReference.child("Ubicacion").child(idUbicacion).child("nombre").setValue(nombreUbicacion);
+            mDatabaseReference.child("Ubicacion").child(idUbicacion).child("latitude").setValue(latitude);
+            mDatabaseReference.child("Ubicacion").child(idUbicacion).child("longitude").setValue(longitude);
+        }
+        else {
+            idUbicacion = localizacion.getString("idUbicacion");
+            confirmaciontxt.setText("Ubicación agregada correctamente!");
+        }
+        idPedido = mDatabaseReference.child("Pedidos").push().getKey();
         for (int i=0;i<carritos.size();i++){
             Carrito carrito = carritos.get(i);
-            mDatabaseReference.child(idPedido).child(carrito.getIdProducto()).setValue(carrito);
+            mDatabaseReference.child("Pedidos").child(idPedido).child(carrito.getIdProducto()).setValue(carrito);
         }
         preciototal = sharedPref.getString("PrecioTotal","0");
         Log.d("precioTotal",preciototal);
-        mDatabaseReference.child(idPedido).child("Precio Total").setValue(preciototal);
-        mDatabaseReference.child(idPedido).child("Direccion").setValue(direcciontxt.getText().toString());
-        mDatabaseReference.child(idPedido).child("Referencia").setValue(referenciadirtxt.getText().toString());
-        mDatabaseReference.child(idPedido).child("NumeroRef").setValue(numeroreftxt.getText().toString());
+        mDatabaseReference.child("Pedidos").child(idPedido).child("Precio Total").setValue(preciototal);
+        mDatabaseReference.child("Pedidos").child(idPedido).child("Direccion").setValue(direcciontxt.getText().toString());
+        mDatabaseReference.child("Pedidos").child(idPedido).child("Referencia").setValue(referenciadirtxt.getText().toString());
+        mDatabaseReference.child("Pedidos").child(idPedido).child("NumeroRef").setValue(numeroreftxt.getText().toString());
+        mDatabaseReference.child("Pedidos").child(idPedido).child("idUbicacion").setValue(idUbicacion);
         Toast.makeText(this, "Pedido en Proceso...", Toast.LENGTH_SHORT).show();
 
     }

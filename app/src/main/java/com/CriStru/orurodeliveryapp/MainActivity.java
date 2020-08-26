@@ -7,19 +7,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.CriStru.orurodeliveryapp.Adapters.Categorias.CategoriasAdapter;
@@ -31,6 +30,8 @@ import com.CriStru.orurodeliveryapp.UI.CategoriasDialogActivity;
 import com.facebook.login.LoginManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,7 +39,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import java.util.ArrayList;
 
@@ -55,9 +55,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     private FloatingActionButton mShopAction;
     private CategoriasAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    int maxPages=0,page;
+    long timeInterval=5000;
     private ArrayList<Categoria> categoriaList = new ArrayList<>();
     private ArrayList<Promociones> promocionesArrayList = new ArrayList<>();
-    private DiscreteScrollView scrollView;
+    private ViewPager2 scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +67,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         setContentView(R.layout.activity_main);
         mDrawerLayout = findViewById(R.id.drawer);
         mNavigationView = findViewById(R.id.navView);
-        mShopAction = findViewById(R.id.shopFloating_Button);
+        mShopAction = findViewById(R.id.shopFloating_Button3);
         mToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(mToolbar);
 
         scrollView = findViewById(R.id.picker);
         scrollView.setMinimumHeight(pxToDp(1440));
-
 
         if (mNavigationView != null) {
             mNavigationView.setNavigationItemSelectedListener(this);
@@ -148,8 +149,27 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
                     AdapterScroll scroll= new AdapterScroll(promocionesArrayList,R.layout.itemscroll_card, getApplicationContext());
                     scrollView.setAdapter(scroll);
-                 //   scrollView.setItemTransitionTimeMillis();
-
+                    maxPages = scroll.getItemCount();
+                    final Handler handler = new Handler();
+                    Runnable runable = new Runnable() {
+                        @Override
+                        public void run() {
+                            //this will select next page number
+                            page = page==maxPages? 0 : ++page;
+                            //this will change the page to concrete page number
+                            scrollView.setCurrentItem(page);
+                            //this will execute this code after timeInterval
+                            handler.postDelayed(this, timeInterval);
+                        }
+                    };
+                    handler.postDelayed(runable, timeInterval);
+                    TabLayout tabLayout = findViewById(R.id.tabDots);
+                    new TabLayoutMediator(tabLayout, scrollView,new TabLayoutMediator.TabConfigurationStrategy(){
+                        @Override
+                        public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                            tab.setText("");
+                        }
+                    }).attach();
                 }
             }
 

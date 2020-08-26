@@ -20,7 +20,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/shopFloating_Button3"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:src="@drawable/shop_kart"
+            android:tint="@color/colorWhiter"
+            app:fabSize="normal"
+            android:backgroundTint="@color/mainColor" />
 
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/FragmentHolder"
         android:layout_width="match_parent"

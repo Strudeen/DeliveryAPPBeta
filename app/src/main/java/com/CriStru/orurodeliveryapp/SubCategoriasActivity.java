@@ -16,14 +16,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.CriStru.orurodeliveryapp.Adapters.SubCategorias.ItemClickSupportSubCategorias;
 import com.CriStru.orurodeliveryapp.Adapters.SubCategorias.SubCategoriasAdapter;
 import com.CriStru.orurodeliveryapp.Models.SubCategoria;
-import com.CriStru.orurodeliveryapp.UI.CategoriasDialogActivity;
 import com.CriStru.orurodeliveryapp.UI.ProductosDialogActivity;
 import com.CriStru.orurodeliveryapp.UI.SubCategoriasDialog;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +43,7 @@ public class SubCategoriasActivity extends AppCompatActivity {
     private String nombreCategoria;
     private FirebaseAuth mAuth;
     private ArrayList<SubCategoria> subCategoriaArrayList = new ArrayList<>();
+    private FloatingActionButton mShopAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +52,14 @@ public class SubCategoriasActivity extends AppCompatActivity {
         setUpView();
         getNombreCategoria();
         getSubCategorias();
+
+        mShopAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SubCategoriasActivity.this, ShopActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setUpView() {
@@ -60,6 +68,7 @@ public class SubCategoriasActivity extends AppCompatActivity {
         mDataBase=FirebaseDatabase.getInstance().getReference();
         tvNombreCategoria=findViewById(R.id.tvNombreCategoriaSub);
         extras=getIntent().getExtras();
+        mShopAction = findViewById(R.id.shopFloating_Button3);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbarSubcat);
         setSupportActionBar(myToolbar);
         final Drawable menuIcon = getResources().getDrawable(R.drawable.ic_back);

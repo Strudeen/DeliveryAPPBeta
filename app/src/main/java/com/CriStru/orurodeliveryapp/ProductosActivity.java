@@ -3,8 +3,8 @@ package com.CriStru.orurodeliveryapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.CriStru.orurodeliveryapp.Models.Carrito;
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +30,7 @@ public class ProductosActivity extends AppCompatActivity {
     private String idProducto;
     private Bundle extras,idCategoria;
     private Carrito carrito;
+    private FloatingActionButton mShopAction;
 
 
     @Override
@@ -38,6 +40,15 @@ public class ProductosActivity extends AppCompatActivity {
         SugarContext.init(this);
         setupView();
         callData();
+
+        mShopAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProductosActivity.this, ShopActivity.class);
+                startActivity(intent);
+                Toast.makeText(ProductosActivity.this, "Carritp", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void setupView(){
@@ -47,6 +58,7 @@ public class ProductosActivity extends AppCompatActivity {
         tvPrecio = findViewById(R.id.textViewPrecio);
         tvDescripcion = findViewById(R.id.textViewDescripcion);
         addToShopbtn = findViewById(R.id.btnAñadirAlCarrito);
+        mShopAction = findViewById(R.id.shopFloating_Button3);
         addToShopbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

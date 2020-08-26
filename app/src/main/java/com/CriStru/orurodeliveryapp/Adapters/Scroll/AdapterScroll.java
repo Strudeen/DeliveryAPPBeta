@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.CriStru.orurodeliveryapp.R;
@@ -51,8 +52,10 @@ public class AdapterScroll extends RecyclerView.Adapter<AdapterScroll.ViewHolder
         public ViewHolder(View view){
             super(view);
             this.view=view;
+            this.view.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             this.imageView = (ImageView) view.findViewById(R.id.image_scroll);
-            imageView.setMinimumWidth(pxToDp(1440));
+            //imageView.setMinimumWidth(pxToDp(1440));
+
         }
         public int pxToDp(int px) {
             DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();

@@ -2,6 +2,7 @@ package com.CriStru.orurodeliveryapp.Adapters.Categorias;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.CriStru.orurodeliveryapp.UI.CategoriasDialogActivity;
@@ -67,6 +69,7 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
         public DatabaseReference mDatabase;
         public FirebaseAuth mAuth;
         public FirebaseUser mUser;
+        public CardView mCardview;
         private String tipo="";
 
         public ViewHolder(View view) {
@@ -77,6 +80,9 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
             this.imageViewCategorias = (ImageView) view.findViewById(R.id.imageViewCategorias);
             this.idCategorias = (TextView) view.findViewById(R.id.idCategorias);
             this.editCategoriaCard=(ImageView) view.findViewById(R.id.editCategoriaCard);
+            this.mCardview = (CardView) view.findViewById(R.id.CardViewCategorias);
+            this.imageViewCategorias.setMinimumWidth(pxToDp(644));
+
             this.editCategoriaCard.setOnClickListener(this);
             mDatabase = FirebaseDatabase.getInstance().getReference().child("Usuario");
             mAuth = FirebaseAuth.getInstance();
@@ -118,6 +124,10 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
                     context.startActivity(intent);
                     break;
             }
+        }
+        public int pxToDp(int px) {
+            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+            return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         }
     }
 }

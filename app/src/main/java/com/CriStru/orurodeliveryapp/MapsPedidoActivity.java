@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -36,6 +37,7 @@ public class MapsPedidoActivity extends FragmentActivity implements OnMapReadyCa
     FusedLocationProviderClient fusedLocationProviderClient;
     private GoogleMap mMap;
     private Button confirmar_dirbtn;
+    private EditText nombreUbicacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class MapsPedidoActivity extends FragmentActivity implements OnMapReadyCa
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         confirmar_dirbtn = findViewById(R.id.confirmar_dir_btn);
-
+        nombreUbicacion = findViewById(R.id.editTextNombreUbicacion);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
@@ -106,8 +108,9 @@ public class MapsPedidoActivity extends FragmentActivity implements OnMapReadyCa
                                 @Override
                                 public void onClick(View view) {
                                     Intent intent = new Intent(MapsPedidoActivity.this, FormPedidoActivity.class);
-                                    intent.putExtra("direccion", "" + mPosition.latitude + "," + mPosition.longitude);
+                                    intent.putExtra("direccion", "" + mPosition.latitude + "," + mPosition.longitude+","+nombreUbicacion.getText());
                                     intent.putExtra("preciototal", "");
+                                    intent.putExtra("idUbicacion","");
                                     startActivity(intent);
                                 }
                             });
