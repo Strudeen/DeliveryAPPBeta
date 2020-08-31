@@ -1,5 +1,6 @@
 package com.CriStru.orurodeliveryapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -20,8 +21,12 @@ import android.widget.Toast;
 import com.CriStru.orurodeliveryapp.Models.Carrito;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.orm.SugarRecord;
 
 import java.util.List;
 
@@ -34,6 +39,8 @@ public class FormPedidoActivity extends AppCompatActivity {
     private Double latitude=0d, longitude=0d;
     private EditText direcciontxt, referenciadirtxt, numeroreftxt;
     private String preciototal="", nombreUbicacion="";
+    private FirebaseUser user;
+
     SharedPreferences.Editor myEditor;
     SharedPreferences sharedPref;
 
@@ -52,7 +59,14 @@ public class FormPedidoActivity extends AppCompatActivity {
         confirmar = findViewById(R.id.confirmar_btn);
         direcciontxt = findViewById(R.id.direccion_txt);
         referenciadirtxt = findViewById(R.id.referencia_txt);
+        localizacion = getIntent().getExtras();
         numeroreftxt = findViewById(R.id.telefono_txt);
+        confirmaciontxt = findViewById(R.id.confirmaciontxt);
+        buscarbtn = findViewById(R.id.buscar_btn);
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -68,8 +82,35 @@ public class FormPedidoActivity extends AppCompatActivity {
         });
 
 
-        confirmaciontxt = findViewById(R.id.confirmaciontxt);
-        buscarbtn = findViewById(R.id.buscar_btn);
+        if (!localizacion.getString("idUbicacion").equals("")){
+            String idubicacion=localizacion.getString("idUbicacion");
+            mDatabaseReference.child("Ubicacion").child(idubicacion).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        direcciontxt.setText(dataSnapshot.child("direccion").getValue().toString());
+                        numeroreftxt.setText(dataSnapshot.child("celreferencia").getValue().toString());
+                        referenciadirtxt.setText(dataSnapshot.child("referencia").getValue().toString());
+                        confirmaciontxt.setText("Ubicación agregada correctamente!");
+                        confirmaciontxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_success, 0);
+                        confirmaciontxt.setTextColor(getResources().getColor(R.color.success));
+                        confirmar.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                confirmarPedido();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+
         buscarbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,7 +138,7 @@ public class FormPedidoActivity extends AppCompatActivity {
         referenciadirtxt.setText(sharedPref.getString("referencia", ""));
         numeroreftxt.setText(sharedPref.getString("telefono", ""));
 
-        localizacion = getIntent().getExtras();
+
         if (!localizacion.getString("preciototal").equals("")){
             preciototal = localizacion.getString("preciototal");
             myEditor.putString("PrecioTotal", preciototal);
@@ -105,21 +146,8 @@ public class FormPedidoActivity extends AppCompatActivity {
         }
         Log.d("precioTotal",sharedPref.getString("PrecioTotal","0"));
 
-        if (!localizacion.getString("direccion").equals("") || !localizacion.getString("idUbicacion").equals("")) {
+        if (!localizacion.getString("direccion").equals("")) {
             Log.d("idUbicacion",localizacion.getString("idUbicacion"));
-            if (!localizacion.getString("idUbicacion").equals("")){
-
-                confirmaciontxt.setText("Ubicación agregada correctamente!");
-                confirmaciontxt.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_success, 0);
-                confirmaciontxt.setTextColor(getResources().getColor(R.color.success));
-                confirmar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        confirmarPedido();
-                    }
-                });
-            }
-            else {
                 String[] ubicacion = localizacion.getString("direccion").split(",");
                 latitude = Double.parseDouble(ubicacion[0]);
                 longitude = Double.parseDouble(ubicacion[1]);
@@ -134,7 +162,6 @@ public class FormPedidoActivity extends AppCompatActivity {
                         confirmarPedido();
                     }
                 });
-            }
         }
 
         else {
@@ -149,8 +176,6 @@ public class FormPedidoActivity extends AppCompatActivity {
     public void confirmarPedido(){
         Log.d("precioTotal",sharedPref.getString("PrecioTotal","0"));
         String idPedido="";
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         List<Carrito> carritos = Carrito.listAll(Carrito.class);
         String idUbicacion = "";
         if (localizacion.getString("idUbicacion").equals("")){
@@ -159,6 +184,12 @@ public class FormPedidoActivity extends AppCompatActivity {
             mDatabaseReference.child("Ubicacion").child(idUbicacion).child("nombre").setValue(nombreUbicacion);
             mDatabaseReference.child("Ubicacion").child(idUbicacion).child("latitude").setValue(latitude);
             mDatabaseReference.child("Ubicacion").child(idUbicacion).child("longitude").setValue(longitude);
+            mDatabaseReference.child("Ubicacion").child(idUbicacion).child("direccion").setValue(direcciontxt.getText().toString());
+            mDatabaseReference.child("Ubicacion").child(idUbicacion).child("referencia").setValue(referenciadirtxt.getText().toString());
+            mDatabaseReference.child("Ubicacion").child(idUbicacion).child("celreferencia").setValue(numeroreftxt.getText().toString());
+
+
+
         }
         else {
             idUbicacion = localizacion.getString("idUbicacion");
@@ -167,16 +198,37 @@ public class FormPedidoActivity extends AppCompatActivity {
         idPedido = mDatabaseReference.child("Pedidos").push().getKey();
         for (int i=0;i<carritos.size();i++){
             Carrito carrito = carritos.get(i);
-            mDatabaseReference.child("Pedidos").child(idPedido).child(carrito.getIdProducto()).setValue(carrito);
-        }
-        preciototal = sharedPref.getString("PrecioTotal","0");
-        Log.d("precioTotal",preciototal);
-        mDatabaseReference.child("Pedidos").child(idPedido).child("Precio Total").setValue(preciototal);
-        mDatabaseReference.child("Pedidos").child(idPedido).child("Direccion").setValue(direcciontxt.getText().toString());
-        mDatabaseReference.child("Pedidos").child(idPedido).child("Referencia").setValue(referenciadirtxt.getText().toString());
-        mDatabaseReference.child("Pedidos").child(idPedido).child("NumeroRef").setValue(numeroreftxt.getText().toString());
-        mDatabaseReference.child("Pedidos").child(idPedido).child("idUbicacion").setValue(idUbicacion);
-        Toast.makeText(this, "Pedido en Proceso...", Toast.LENGTH_SHORT).show();
+            String finalIdPedido = idPedido;
+            String finalIdUbicacion = idUbicacion;
+            mDatabaseReference.child("Producto").child(carrito.getIdProducto()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists() && carrito.getMaxStock()<=Integer.parseInt(dataSnapshot.child("stock").getValue().toString()))
+                        mDatabaseReference.child("Pedidos").child(finalIdPedido).child(carrito.getIdProducto()).child("Cantidad").setValue(carrito.getMaxStock());
+                    else {
+                        Toast.makeText(FormPedidoActivity.this, "Algunos de tus productos no tienen stock suficiente", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    preciototal = sharedPref.getString("PrecioTotal","0");
+                    Log.d("precioTotal",preciototal);
+                    mDatabaseReference.child("Pedidos").child(finalIdPedido).child("Precio Total").setValue(preciototal);
+                    mDatabaseReference.child("Pedidos").child(finalIdPedido).child("idUbicacion").setValue(finalIdUbicacion);
 
+                    Carrito.deleteAll(Carrito.class);
+                    myEditor.putString("direccion", "");
+                    myEditor.putString("referencia", "");
+                    myEditor.putString("telefono", "");
+                    myEditor.commit();
+
+                    Intent intent1 = new Intent(FormPedidoActivity.this, PedidoRealizadoActivity.class);
+                    startActivity(intent1);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        }
     }
 }

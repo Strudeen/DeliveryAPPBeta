@@ -20,22 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/shopFloating_Button3"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
-            android:src="@drawable/shop_kart"
-            android:tint="@color/colorWhiter"
-            app:fabSize="normal"
-            android:backgroundTint="@color/mainColor" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/FragmentHolder"
         android:layout_width="match_parent"
@@ -43,7 +28,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvProductos"/>
+        app:layout_constraintTop_toBottomOf="@+id/tvProductos">
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/shopFloating_Button3"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/mainColor"
+            android:src="@drawable/shop_kart"
+            android:tint="@color/colorWhiter"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerSubCategorias"
@@ -56,7 +57,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/subcategorias_card"
-        app:layout_constraintTop_toBottomOf="@+id/tvNombreCategoriaSub" />
+        app:layout_constraintTop_toBottomOf="@+id/tvNombreCategoriaSub" >
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
         android:id="@+id/tvNombreCategoriaSub"

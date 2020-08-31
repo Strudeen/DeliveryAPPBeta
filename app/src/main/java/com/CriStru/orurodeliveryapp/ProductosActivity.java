@@ -21,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.orm.SugarContext;
 
+import java.util.List;
+
 public class ProductosActivity extends AppCompatActivity {
 
     private TextView tvNombre, tvCategoria, tvStock, tvPrecio, tvDescripcion;
@@ -78,15 +80,47 @@ public class ProductosActivity extends AppCompatActivity {
         mDatabaseReference.child("Producto").child(idProducto).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    String nombre=dataSnapshot.child("nombre").getValue().toString();
-                    String fotoUrl = dataSnapshot.child("fotoUrl").getValue().toString();
-                    String Stock = dataSnapshot.child("stock").getValue().toString();
-                    String precio = dataSnapshot.child("precio").getValue().toString();
-                    String id = dataSnapshot.getKey();
-                    carrito = new Carrito(nombre, fotoUrl, Integer.parseInt(Stock),  1, Float.parseFloat(precio), id);
-                    carrito.save();
-                    Toast.makeText(ProductosActivity.this, "¡Producto añadido al carrito!", Toast.LENGTH_SHORT).show();
+                if (dataSnapshot.exists() && Integer.parseInt(dataSnapshot.child("stock").getValue().toString())>0){
+                    List<Carrito> carritos=Carrito.listAll(Carrito.class);
+                    if (carritos.size()>0){
+                        for (Carrito c:
+                                carritos) {
+                            if (!c.getIdProducto().equals(dataSnapshot.getKey())){
+                                String nombre=dataSnapshot.child("nombre").getValue().toString();
+                                String fotoUrl = dataSnapshot.child("fotoUrl").getValue().toString();
+                                String Stock = dataSnapshot.child("stock").getValue().toString();
+                                String precio = dataSnapshot.child("precio").getValue().toString();
+                                String id = dataSnapshot.getKey();
+                                carrito = new Carrito(nombre, fotoUrl, Integer.parseInt(Stock),  1, Float.parseFloat(precio), id);
+                                carrito.save();
+                                Toast.makeText(ProductosActivity.this, "¡Producto añadido al carrito!", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(ProductosActivity.this, "¡El producto ya se encuentra añadido!", Toast.LENGTH_SHORT).show();
+                                addToShopbtn.setText("Añadido al Carrito!");
+                                addToShopbtn.setTextColor(getResources().getColor(R.color.colorWhiter));
+                                addToShopbtn.setBackgroundTintList(getResources().getColorStateList(R.color.mainColor));
+                            }
+                        }
+                    }
+                    else {
+                        String nombre=dataSnapshot.child("nombre").getValue().toString();
+                        String fotoUrl = dataSnapshot.child("fotoUrl").getValue().toString();
+                        String Stock = dataSnapshot.child("stock").getValue().toString();
+                        String precio = dataSnapshot.child("precio").getValue().toString();
+                        String id = dataSnapshot.getKey();
+                        carrito = new Carrito(nombre, fotoUrl, Integer.parseInt(Stock),  1, Float.parseFloat(precio), id);
+                        carrito.save();
+                        Toast.makeText(ProductosActivity.this, "¡Producto añadido al carrito!", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+                else {
+                    Toast.makeText(ProductosActivity.this, "Stock insuficiente", Toast.LENGTH_SHORT).show();
+                    addToShopbtn.setText("Producto sin existencias :(");
+                    addToShopbtn.setTextColor(getResources().getColor(R.color.colorWhiter));
+                    addToShopbtn.setBackgroundTintList(getResources().getColorStateList(R.color.failure));
                 }
             }
 
@@ -98,7 +132,7 @@ public class ProductosActivity extends AppCompatActivity {
     }
 
     public void callData() {
-        mDatabaseReference.child("Producto").child(idProducto).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseReference.child("Producto").child(idProducto).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {

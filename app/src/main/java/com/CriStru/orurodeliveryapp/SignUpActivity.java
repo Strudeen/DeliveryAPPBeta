@@ -31,7 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
-    EditText etEmail,etContraseña,etNombre,etApellido, etCel;
+    EditText etEmail,etContraseña,etNombre,etApellido;
     Button btnRegistrarse;
     ProgressBar progressBarSignUp;
     private FirebaseAuth mAuth;
@@ -48,7 +48,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         etContraseña=findViewById(R.id.etContraseñaSignIn);
         etNombre=findViewById(R.id.etNombre);
         etApellido=findViewById(R.id.etApellido);
-        etCel =findViewById(R.id.etCel);
+
         btnRegistrarse=findViewById(R.id.btnRegistrarse);
         btnRegistrarse.setOnClickListener(this);
         mAuth=FirebaseAuth.getInstance();
@@ -129,21 +129,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             etApellido.setError(null);
         }
 
-        String celular= etCel.getText().toString();
-        String[] numcel = celular.split(" ");
-        Toast.makeText(getApplicationContext(),numcel[0],Toast.LENGTH_SHORT).show();
-        if (TextUtils.isEmpty(celular)){
-            etCel.setError("Este campo es obligatorio");
-            valid=false;
-        }else {
-            if (celular.length() < 8 || celular.length() > 8){
-                etCel.setError("Inserte un número valido");
-                valid=false;
-            }
-            else {
-                etCel.setError(null);
-            }
-        }
         return valid;
     }
     private void CreateAccount(String email,String password){
@@ -202,7 +187,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         progressBarSignUp.setVisibility(View.INVISIBLE);
                     }
                     else {
-                        Usuario usuario=new Usuario(etNombre.getText().toString()+" "+etApellido.getText().toString(), etCel.getText().toString(),"USR");
+                        Usuario usuario=new Usuario(etNombre.getText().toString()+" "+etApellido.getText().toString(), "USR");
                         tableUsuario.child(Uid).setValue(usuario);
                         Log.d("Success", "Save user data");
                     }
@@ -214,26 +199,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             });
         }
     }
-    //TODO verificacion email
-    /*private void sendEmailVerification(final FirebaseUser user) {
-        user.sendEmailVerification()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(SignUpActivity.this,
-                                    "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            //Log.e(TAG, "sendEmailVerification", task.getException());
-                            Toast.makeText(SignUpActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        // [END_EXCLUDE]
-                    }
-                });
-    }*/
 
     @Override
     public void onClick(View v) {
