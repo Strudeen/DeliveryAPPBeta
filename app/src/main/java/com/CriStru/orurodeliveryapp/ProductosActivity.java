@@ -82,25 +82,29 @@ public class ProductosActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && Integer.parseInt(dataSnapshot.child("stock").getValue().toString())>0){
                     List<Carrito> carritos=Carrito.listAll(Carrito.class);
+                    boolean existe=false;
                     if (carritos.size()>0){
                         for (Carrito c:
                                 carritos) {
-                            if (!c.getIdProducto().equals(dataSnapshot.getKey())){
-                                String nombre=dataSnapshot.child("nombre").getValue().toString();
-                                String fotoUrl = dataSnapshot.child("fotoUrl").getValue().toString();
-                                String Stock = dataSnapshot.child("stock").getValue().toString();
-                                String precio = dataSnapshot.child("precio").getValue().toString();
-                                String id = dataSnapshot.getKey();
-                                carrito = new Carrito(nombre, fotoUrl, Integer.parseInt(Stock),  1, Float.parseFloat(precio), id);
-                                carrito.save();
-                                Toast.makeText(ProductosActivity.this, "¡Producto añadido al carrito!", Toast.LENGTH_SHORT).show();
+                            if (c.getIdProducto().equals(idProducto)){
+                                existe=true;
                             }
-                            else {
-                                Toast.makeText(ProductosActivity.this, "¡El producto ya se encuentra añadido!", Toast.LENGTH_SHORT).show();
-                                addToShopbtn.setText("Añadido al Carrito!");
-                                addToShopbtn.setTextColor(getResources().getColor(R.color.colorWhiter));
-                                addToShopbtn.setBackgroundTintList(getResources().getColorStateList(R.color.mainColor));
-                            }
+                        }
+                        if (existe == false){
+                            String nombre=dataSnapshot.child("nombre").getValue().toString();
+                            String fotoUrl = dataSnapshot.child("fotoUrl").getValue().toString();
+                            String Stock = dataSnapshot.child("stock").getValue().toString();
+                            String precio = dataSnapshot.child("precio").getValue().toString();
+                            String id = dataSnapshot.getKey();
+                            carrito = new Carrito(nombre, fotoUrl, Integer.parseInt(Stock),  1, Float.parseFloat(precio), id);
+                            carrito.save();
+                            Toast.makeText(ProductosActivity.this, "¡Producto añadido al carrito!", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(ProductosActivity.this, "¡El producto ya se encuentra añadido!", Toast.LENGTH_SHORT).show();
+                            addToShopbtn.setText("Añadido al Carrito!");
+                            addToShopbtn.setTextColor(getResources().getColor(R.color.colorWhiter));
+                            addToShopbtn.setBackgroundTintList(getResources().getColorStateList(R.color.mainColor));
                         }
                     }
                     else {
@@ -140,7 +144,7 @@ public class ProductosActivity extends AppCompatActivity {
                     tvDescripcion.setText(dataSnapshot.child("descripcion").getValue().toString());
                     tvPrecio.setText(Float.parseFloat(dataSnapshot.child("precio").getValue().toString()) + " Bs");
                     tvStock.setText("Stock: " + Integer.parseInt(dataSnapshot.child("stock").getValue().toString()));
-                    Glide.with(ProductosActivity.this).load(dataSnapshot.child("fotoUrl").getValue().toString()).into(photoProduct);
+                    Glide.with(getApplicationContext()).load(dataSnapshot.child("fotoUrl").getValue().toString()).into(photoProduct);
                     String id=dataSnapshot.child("subCategoria").getValue().toString();
                     mDatabaseReference.child("SubCategorias").child(id).addValueEventListener(new ValueEventListener() {
                         @Override

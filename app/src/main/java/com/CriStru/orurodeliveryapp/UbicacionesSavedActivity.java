@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Adapter;
 import android.widget.Button;
@@ -45,22 +46,27 @@ public class UbicacionesSavedActivity extends AppCompatActivity {
         LoadUbicacions();
     }
 
+
+
     private void LoadUbicacions() {
-        mDatabaseReference.child("Ubicacion").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseReference.child("Ubicacion").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayList.clear();
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot ds :
                             dataSnapshot.getChildren()) {
-                        if (ds.child("uid").getValue().toString().equals(user.getUid())) {
+                        if (ds.child("uid").getValue().toString().equals(user.getUid()) && ds.child("nombre").exists()) {
                             String id = ds.getKey();
                             String nombre = ds.child("nombre").getValue().toString();
                             arrayList.add(new Ubicaciones(id, nombre));
+
                         }
                     }
-                    ubicacionesAdapter = new UbicacionesAdapter(R.layout.ubicaciones_card, arrayList, getApplicationContext());
-                    mRecyclerView.setAdapter(ubicacionesAdapter);
                 }
+                ubicacionesAdapter = new UbicacionesAdapter(R.layout.ubicaciones_card, arrayList, getApplicationContext());
+                ubicacionesAdapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(ubicacionesAdapter);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -68,6 +74,4 @@ public class UbicacionesSavedActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

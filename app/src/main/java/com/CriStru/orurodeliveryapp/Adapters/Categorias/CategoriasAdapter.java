@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -51,8 +52,8 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //obtener solo un item de la base de datos
         Categoria categoria=categoriaList.get(position);
-        holder.textViewNombreCategorias.setText(categoria.getNombre());
-        holder.textViewDescripcionCategorias.setText(categoria.getDescripcion());
+        /*holder.textViewNombreCategorias.setText(categoria.getNombre());
+        holder.textViewDescripcionCategorias.setText(categoria.getDescripcion());*/
         holder.idCategorias.setText(categoria.getCategoria_id());
         Glide.with(context).load(categoria.getFotoUrl()).into(holder.imageViewCategorias);
     }
@@ -75,8 +76,8 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
         public ViewHolder(View view) {
             super(view);
             this.view = view;
-            this.textViewNombreCategorias = (TextView) view.findViewById(R.id.textViewNombreCategoria);
-            this.textViewDescripcionCategorias = (TextView) view.findViewById(R.id.textViewDescripcionCategoria);
+            /*this.textViewNombreCategorias = (TextView) view.findViewById(R.id.textViewNombreCategoria);
+            this.textViewDescripcionCategorias = (TextView) view.findViewById(R.id.textViewDescripcionCategoria);*/
             this.imageViewCategorias = (ImageView) view.findViewById(R.id.imageViewCategorias);
             this.idCategorias = (TextView) view.findViewById(R.id.idCategorias);
             this.editCategoriaCard=(ImageView) view.findViewById(R.id.editCategoriaCard);

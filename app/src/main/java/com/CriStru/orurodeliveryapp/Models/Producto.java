@@ -30,6 +30,14 @@ public class Producto {
         this.Stock = stock;
         this.precio = precio;
     }
+    public Producto(String nombre, String descripcion, String fotoUrl, int stock, float precio,String idProducto) {
+        this.Nombre = nombre;
+        this.Descripcion = descripcion;
+        this.FotoUrl = fotoUrl;
+        this.Stock = stock;
+        this.precio = precio;
+        this.IdProducto = idProducto;
+    }
 
     public String getSubCategoria() {
         return SubCategoria;

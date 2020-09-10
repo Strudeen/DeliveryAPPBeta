@@ -11,13 +11,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.CriStru.orurodeliveryapp.Models.Categoria;
+import com.CriStru.orurodeliveryapp.Models.SubCategoriaDialog;
 import com.CriStru.orurodeliveryapp.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
@@ -34,11 +38,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CategoriasDialogActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private Button btnCargarImagen,btnGuardar,btnCancelar;
-    private EditText nombreCategoria,descripcionCategoria;
+    //private EditText nombreCategoria,descripcionCategoria;
     private ImageView imageViewFoto;
     private StorageReference mStorage;
     private DatabaseReference mDatabase;
@@ -47,6 +54,9 @@ public class CategoriasDialogActivity extends AppCompatActivity {
     private boolean changeFoto;
     private ProgressBar mProgresDialog;
     private Uri mImageUri;
+    private String option="";
+    private Spinner mSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,15 +67,35 @@ public class CategoriasDialogActivity extends AppCompatActivity {
     }
 
     private void setupView() {
-        nombreCategoria=findViewById(R.id.etNombreCategoriasD);
-        descripcionCategoria=findViewById(R.id.etDescripcionCategoriasD);
+      //  nombreCategoria=findViewById(R.id.etNombreCategoriasD);
+     //   descripcionCategoria=findViewById(R.id.etDescripcionCategoriasD);
         btnCancelar=findViewById(R.id.btnCancelarCategoriasD);
         btnGuardar=findViewById(R.id.btnGuardarCategoriasD);
         btnCargarImagen=findViewById(R.id.btnCargarImagenCategoriasD);
         imageViewFoto=findViewById(R.id.imageViewFotoCategoriaD);
-        mStorage=FirebaseStorage.getInstance().getReference("Categorias");
-        mDatabase= FirebaseDatabase.getInstance().getReference("Categorias");
+        mStorage=FirebaseStorage.getInstance().getReference();
+        mDatabase= FirebaseDatabase.getInstance().getReference();
         mProgresDialog = findViewById(R.id.progressBar2);
+        mSpinner = findViewById(R.id.spinnerCategorias);
+
+        List<String> dialogList = new ArrayList<>();
+
+        dialogList.add("Categorias");
+        dialogList.add("Promociones");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line,dialogList);
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                option = dialogList.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         btnCargarImagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +106,12 @@ public class CategoriasDialogActivity extends AppCompatActivity {
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadFile();
+                if (option.equals("Categorias")){
+                    uploadFile();
+                }else if (option.equals("Promociones")){
+                    uploadFile2();
+                }
+
             }
         });
 
@@ -88,18 +123,88 @@ public class CategoriasDialogActivity extends AppCompatActivity {
         });
     }
 
+    private void uploadFile2() {
+        mProgresDialog.setVisibility(View.VISIBLE);
+        if (mImageUri != null){
+            StorageReference fileReference = mStorage.child("Promociones").child(System.currentTimeMillis()+"."+getFileExtension(mImageUri));
+
+            fileReference.putFile(mImageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful())
+                    {
+                        throw task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful())
+                    {
+                        Uri downloadUri = task.getResult();
+                        Log.e("TAG", "then: " + downloadUri.toString());
+                        if (idCategoria.equals("")){
+                            idCategoria = mDatabase.child("Promociones").push().getKey();
+                        }
+                        else {
+                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                            StorageReference httpsReference = storage.getReferenceFromUrl(fotoUrl);
+                            httpsReference.delete().addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(CategoriasDialogActivity.this, "Error al Guardar los Datos", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        fileReference.getDownloadUrl();
+                        //Categoria Categoria = new Categoria(nombreCategoria.getText().toString(),descripcionCategoria.getText().toString(),downloadUri.toString());
+                        mDatabase.child("Promociones").child(idCategoria).child("fotoUrl").setValue(downloadUri.toString());
+                        Toast.makeText(CategoriasDialogActivity.this, "Datos Guardados Correctamente", Toast.LENGTH_SHORT).show();
+                        mProgresDialog.setVisibility(View.GONE);
+                        finish();
+
+                    } else
+                    {
+                        Toast.makeText(CategoriasDialogActivity.this, "upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(CategoriasDialogActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else {
+            if (idCategoria.equals(""))
+                Toast.makeText(this, "Ningun archivo seleccionado", Toast.LENGTH_SHORT).show();
+            else {
+                if (changeFoto == false){
+                    mProgresDialog.setVisibility(View.VISIBLE);
+                    //Categoria Categoria = new Categoria(nombreCategoria.getText().toString(),descripcionCategoria.getText().toString(),fotoUrl);
+                    mDatabase.child("Promociones").child(idCategoria).child("fotoUrl").setValue(fotoUrl);
+                    Toast.makeText(CategoriasDialogActivity.this, "Datos Guardados Correctamente", Toast.LENGTH_SHORT).show();
+                    mProgresDialog.setVisibility(View.GONE);
+                    finish();
+                }
+            }
+        }
+    }
+
     private void configureServices(){
         extras=getIntent().getExtras();
         if (!extras.getString("idCategoriaDialog").equals("")){
             idCategoria=extras.getString("idCategoriaDialog");
+
             if (!idCategoria.equals("")){
                 changeFoto = false;
-                mDatabase.child(idCategoria).addListenerForSingleValueEvent(new ValueEventListener() {
+                mDatabase.child("Categorias").child(idCategoria).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot != null){
-                            nombreCategoria.setText(dataSnapshot.child("nombre").getValue().toString());
-                            descripcionCategoria.setText(dataSnapshot.child("descripcion").getValue().toString());
+                        if (dataSnapshot.exists()){
+                         //   nombreCategoria.setText(dataSnapshot.child("nombre").getValue().toString());
+                          //  descripcionCategoria.setText(dataSnapshot.child("descripcion").getValue().toString());
                             Glide.with(CategoriasDialogActivity.this).load(dataSnapshot.child("fotoUrl").getValue().toString()).into(imageViewFoto);
                             fotoUrl = dataSnapshot.child("fotoUrl").getValue().toString();
                         }
@@ -123,7 +228,7 @@ public class CategoriasDialogActivity extends AppCompatActivity {
     private void uploadFile() {
         mProgresDialog.setVisibility(View.VISIBLE);
         if (mImageUri != null){
-            StorageReference fileReference = mStorage.child(System.currentTimeMillis()+"."+getFileExtension(mImageUri));
+            StorageReference fileReference = mStorage.child("Categorias").child(System.currentTimeMillis()+"."+getFileExtension(mImageUri));
 
             fileReference.putFile(mImageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
@@ -142,7 +247,7 @@ public class CategoriasDialogActivity extends AppCompatActivity {
                         Uri downloadUri = task.getResult();
                         Log.e("TAG", "then: " + downloadUri.toString());
                         if (idCategoria.equals("")){
-                            idCategoria = mDatabase.push().getKey();
+                            idCategoria = mDatabase.child("Categorias").push().getKey();
                         }
                         else {
                             FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -155,8 +260,8 @@ public class CategoriasDialogActivity extends AppCompatActivity {
                             });
                         }
                         fileReference.getDownloadUrl();
-                        Categoria Categoria = new Categoria(nombreCategoria.getText().toString(),descripcionCategoria.getText().toString(),downloadUri.toString());
-                        mDatabase.child(idCategoria).setValue(Categoria);
+                        //Categoria Categoria = new Categoria(nombreCategoria.getText().toString(),descripcionCategoria.getText().toString(),downloadUri.toString());
+                        mDatabase.child("Categorias").child(idCategoria).child("fotoUrl").setValue(downloadUri.toString());
                         Toast.makeText(CategoriasDialogActivity.this, "Datos Guardados Correctamente", Toast.LENGTH_SHORT).show();
                         mProgresDialog.setVisibility(View.GONE);
                         finish();
@@ -179,8 +284,8 @@ public class CategoriasDialogActivity extends AppCompatActivity {
             else {
                 if (changeFoto == false){
                     mProgresDialog.setVisibility(View.VISIBLE);
-                    Categoria Categoria = new Categoria(nombreCategoria.getText().toString(),descripcionCategoria.getText().toString(),fotoUrl);
-                    mDatabase.child(idCategoria).setValue(Categoria);
+                    //Categoria Categoria = new Categoria(nombreCategoria.getText().toString(),descripcionCategoria.getText().toString(),fotoUrl);
+                    mDatabase.child("Categorias").child(idCategoria).child("fotoUrl").setValue(fotoUrl);
                     Toast.makeText(CategoriasDialogActivity.this, "Datos Guardados Correctamente", Toast.LENGTH_SHORT).show();
                     mProgresDialog.setVisibility(View.GONE);
                     finish();

@@ -10,8 +10,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -57,6 +60,10 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     private RecyclerView mRecyclerView;
     int maxPages=0,page;
     long timeInterval=5000;
+
+    private Handler handler = new Handler();
+
+
     private ArrayList<Categoria> categoriaList = new ArrayList<>();
     private ArrayList<Promociones> promocionesArrayList = new ArrayList<>();
     private ViewPager2 scrollView;
@@ -120,6 +127,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         });
 
 
+        SetupSlider();
+
         getCategoriasFromFirebase();
     }
 
@@ -137,19 +146,71 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                     categoriaList.clear();
                     for (DataSnapshot ds :
                             dataSnapshot.getChildren()) {
-                        String Nombre = ds.child("nombre").getValue().toString();
-                        String Descripcion = ds.child("descripcion").getValue().toString();
+                       // String Nombre = ds.child("nombre").getValue().toString();
+                       // String Descripcion = ds.child("descripcion").getValue().toString();
                         String FotoUrl = ds.child("fotoUrl").getValue().toString();
                         String id = ds.getKey();
-                        categoriaList.add(new Categoria(id, Nombre, Descripcion, FotoUrl));
-                        promocionesArrayList.add(new Promociones(id,FotoUrl));
+                        categoriaList.add(new Categoria(id, FotoUrl));
                     }
                     mAdapter = new CategoriasAdapter(categoriaList, R.layout.categorias_card, getApplicationContext());
                     mRecyclerView.setAdapter(mAdapter);
+                }
+            }
 
-                    AdapterScroll scroll= new AdapterScroll(promocionesArrayList,R.layout.itemscroll_card, getApplicationContext());
-                    scrollView.setAdapter(scroll);
-                    maxPages = scroll.getItemCount();
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void SetupSlider(){
+
+        dbOruro.child("Promociones").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    promocionesArrayList.clear();
+                    for (DataSnapshot ds:
+                    dataSnapshot.getChildren()) {
+                        String FotoUrl = ds.child("fotoUrl").getValue().toString();
+                        String id = ds.getKey();
+                        promocionesArrayList.add(new Promociones(id,FotoUrl));
+                        AdapterScroll scroll= new AdapterScroll(promocionesArrayList,R.layout.itemscroll_card, getApplicationContext(),scrollView);
+                        scrollView.setAdapter(scroll);
+                        Runnable sliderRunnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                scrollView.setCurrentItem(scrollView.getCurrentItem() + 1);
+                            }
+                        };
+                        scrollView.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                            @Override
+                            public void onPageSelected(int position) {
+                                super.onPageSelected(position);
+                                handler.removeCallbacks(sliderRunnable);
+                                handler.postDelayed(sliderRunnable, 3000);
+                            }
+                        });
+
+
+                        TabLayout tabLayout = findViewById(R.id.tabDots);
+                        new TabLayoutMediator(tabLayout, scrollView,new TabLayoutMediator.TabConfigurationStrategy(){
+                            @Override
+                            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                                tab.setText("");
+                            }
+                        }).attach();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+/*                    maxPages = scroll.getItemCount();
                     final Handler handler = new Handler();
                     Runnable runable = new Runnable() {
                         @Override
@@ -162,23 +223,13 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                             handler.postDelayed(this, timeInterval);
                         }
                     };
-                    handler.postDelayed(runable, timeInterval);
-                    TabLayout tabLayout = findViewById(R.id.tabDots);
-                    new TabLayoutMediator(tabLayout, scrollView,new TabLayoutMediator.TabConfigurationStrategy(){
-                        @Override
-                        public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                            tab.setText("");
-                        }
-                    }).attach();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+                    handler.postDelayed(runable, timeInterval);*/
     }
+
+
+
+
+
 
     @Override
     protected void onStart() {
@@ -234,7 +285,30 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         if (id == R.id.logout_Button) {
             logout();
         }
+        if (id == R.id.goFacebook){
+            // e.g. if your URL is https://www.facebook.com/EXAMPLE_PAGE, you should put EXAMPLE_PAGE at the end of this URL, after the ?
+          //  String YourPageURL = "https://www.facebook.com/Bamboo-109332024201855/";
+           // Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(YourPageURL));
+           startActivity(newFacebookIntent(this.getPackageManager(), "https://www.facebook.com/Bamboo-109332024201855/"));
+        }
+        if (id == R.id.direcciones_fav){
+            Intent intent = new Intent(this, UbicacionesSavedActivity.class);
+            startActivity(intent);
+        }
         return true;
+    }
+
+    public static Intent newFacebookIntent(PackageManager pm, String url) {
+        Uri uri = Uri.parse(url);
+        try {
+            ApplicationInfo applicationInfo = pm.getApplicationInfo("com.facebook.katana", 0);
+            if (applicationInfo.enabled) {
+                // http://stackoverflow.com/a/24547437/1048340
+                uri = Uri.parse("fb://facewebmodal/f?href=" + url);
+            }
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+        return new Intent(Intent.ACTION_VIEW, uri);
     }
 
     @Override
@@ -289,5 +363,6 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }
 

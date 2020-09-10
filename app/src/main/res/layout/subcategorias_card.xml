@@ -4,17 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardviewSubCategorias"
     android:layout_width="140dp"
-    android:layout_height="140dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/backgroundColor"
+    android:layout_height="wrap_content"
     android:layout_marginRight="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="140dp"
-        android:layout_height="140dp">
+        android:elevation="0dp"
+        android:background="@drawable/shape_subcategorias_bordes_redondeados"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/imageViewSubCategoria"
             android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_height="118dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvNombreSubCategoria"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
@@ -24,17 +29,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:layout_marginBottom="5dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tvDescripcionSubCategoria"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.506"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tvDescripcionSubCategoria"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="142dp"
+            android:layout_marginEnd="140dp"
+            android:layout_marginBottom="21dp"
             android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewSubCategoria"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvIdSubCategoria"

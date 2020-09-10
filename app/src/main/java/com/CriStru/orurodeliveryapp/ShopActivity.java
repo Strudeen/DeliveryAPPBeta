@@ -53,8 +53,6 @@ public class ShopActivity extends AppCompatActivity implements DataTransferInter
         categoriaList = new ArrayList<>(carritos);
         mAdapter = new CarritoAdapter(R.layout.carrito_card,categoriaList,ShopActivity.this,this);
         precioTotal=mAdapter.precioTotal;
-        Log.d("PrecioTotal",""+precioTotal + " Bs");
-        Toast.makeText(this, ""+precioTotal, Toast.LENGTH_SHORT).show();
         mRecyclerView.setAdapter(mAdapter);
         tvprecioTotal = findViewById(R.id.tvPrecioTotal);
         mToolbar = findViewById(R.id.my_toolbar);
@@ -63,7 +61,7 @@ public class ShopActivity extends AppCompatActivity implements DataTransferInter
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        myToolbar.setTitle("Registrarse");
+        myToolbar.setTitle("Carrito de Compras");
         final Drawable menuIcon = getResources().getDrawable(R.drawable.ic_back);
         menuIcon.setColorFilter(getResources().getColor(R.color.colorWhiter), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(menuIcon);
@@ -74,11 +72,14 @@ public class ShopActivity extends AppCompatActivity implements DataTransferInter
             }
         });
 
+        tvprecioTotal.setText(precioTotal + " Bs");
+
     }
 
     @Override
     public void onSetValues(float al) {
         tvprecioTotal.setText(""+al + " Bs");
+        precioTotal = al;
     }
 
     @Override
@@ -91,12 +92,17 @@ public class ShopActivity extends AppCompatActivity implements DataTransferInter
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.confirmar:
-                Intent intent = new Intent(ShopActivity.this, FormPedidoActivity.class);
-                intent.putExtra("preciototal", tvprecioTotal.getText().toString());
-                intent.putExtra("direccion", "");
-                intent.putExtra("idUbicacion","");
-                startActivity(intent);
-                return true;
+                List<Carrito> carritos=Carrito.listAll(Carrito.class);
+                if (carritos.size()>=1){
+                    Intent intent = new Intent(ShopActivity.this, FormPedidoActivity.class);
+                    intent.putExtra("preciototal", tvprecioTotal.getText().toString());
+                    intent.putExtra("direccion", "");
+                    intent.putExtra("idUbicacion","");
+                    startActivity(intent);
+                    return true;
+                } else {
+                    Toast.makeText(ShopActivity.this, "Debes tener almenos 1 producto en tu carrito", Toast.LENGTH_SHORT).show();
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }

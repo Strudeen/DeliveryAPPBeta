@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.CriStru.orurodeliveryapp.Adapters.Carrito.CarritoAdapter;
 import com.CriStru.orurodeliveryapp.FormPedidoActivity;
 import com.CriStru.orurodeliveryapp.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -63,6 +65,7 @@ public class UbicacionesAdapter extends RecyclerView.Adapter<UbicacionesAdapter.
             borrarUbicaciones_btn = (Button) view.findViewById(R.id.eliminar_ubicacion_btn);
             cardView = (CardView) view.findViewById(R.id.ubicaciones_cardxd);
             cardView.setOnClickListener(this);
+            borrarUbicaciones_btn.setOnClickListener(this);
         }
 
         @Override
@@ -76,8 +79,14 @@ public class UbicacionesAdapter extends RecyclerView.Adapter<UbicacionesAdapter.
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                     break;
+                case R.id.eliminar_ubicacion_btn:
+                            DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+                            mDatabaseReference.child("Ubicacion").child(idUbicacion_txt.getText().toString()).removeValue();
+                    break;
             }
         }
+
+
     }
 
 }

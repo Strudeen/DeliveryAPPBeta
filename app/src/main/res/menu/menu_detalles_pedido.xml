@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/tomar_pedido" android:title="Tomar el pedido" android:icon="@drawable/ic_reference"></item>
+    <item android:id="@+id/completar_pedido" android:title="Completar el pedido" android:icon="@drawable/ic_success"></item>
+    <item android:id="@+id/enviar_notificacion" android:title="Envíar Notificación" android:icon="@drawable/ic_notify_to_client" android:iconTint="@color/colorWhiter" app:showAsAction="ifRoom"></item>
+</menu>

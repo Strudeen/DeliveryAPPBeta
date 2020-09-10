@@ -65,7 +65,6 @@ public class ProductosFragment extends Fragment {
                 Intent intent = new Intent(context, ProductosActivity.class);
                 intent.putExtra("idProducto", idProducto.getText().toString());
                 startActivity(intent);
-                Toast.makeText(context, idProducto.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
         return view;

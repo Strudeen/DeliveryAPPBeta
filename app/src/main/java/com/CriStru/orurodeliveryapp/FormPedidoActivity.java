@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.orm.SugarContext;
 import com.orm.SugarRecord;
 
 import java.util.List;
@@ -52,6 +53,8 @@ public class FormPedidoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_form_pedido);
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         myEditor = sharedPref.edit();
+
+        SugarContext.init(this);
 
         direccionesguardadas_btn = findViewById(R.id.direcciones_btn);
 
@@ -203,8 +206,11 @@ public class FormPedidoActivity extends AppCompatActivity {
             mDatabaseReference.child("Producto").child(carrito.getIdProducto()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists() && carrito.getMaxStock()<=Integer.parseInt(dataSnapshot.child("stock").getValue().toString()))
-                        mDatabaseReference.child("Pedidos").child(finalIdPedido).child(carrito.getIdProducto()).child("Cantidad").setValue(carrito.getMaxStock());
+                    if (dataSnapshot.exists() && carrito.getMaxStock()<=Integer.parseInt(dataSnapshot.child("stock").getValue().toString())){
+                        int cantidadActual = carrito.getStock() - carrito.getMaxStock();
+                        mDatabaseReference.child("Pedidos").child(finalIdPedido).child("Producto").child(carrito.getIdProducto()).child("cantidad").setValue(carrito.getMaxStock());
+                        mDatabaseReference.child("Producto").child(carrito.getIdProducto()).child("stock").setValue(cantidadActual);
+                    }
                     else {
                         Toast.makeText(FormPedidoActivity.this, "Algunos de tus productos no tienen stock suficiente", Toast.LENGTH_SHORT).show();
                         return;
@@ -230,5 +236,8 @@ public class FormPedidoActivity extends AppCompatActivity {
             });
 
         }
+
+
     }
+
 }

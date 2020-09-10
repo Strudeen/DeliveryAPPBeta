@@ -3,7 +3,7 @@
     <color name="colorPrimary">#ff7350</color>
     <color name="colorPrimaryDark">#ff7350</color>
     <color name="colorWhiter">#ffffff</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">#ff7350</color>
     <color name="buttonColor">#efefef</color>
     <color name="textColor">#5c7782</color>
     <color name="mainColor">#ff7350</color>
@@ -11,4 +11,5 @@
     <color name="success">#2e7d32</color>
     <color name="failure">#D50000</color>
     <color name="bambooAmarillo">#fab419</color>
+    <color name="colorBlue">#003c5a</color>
 </resources>

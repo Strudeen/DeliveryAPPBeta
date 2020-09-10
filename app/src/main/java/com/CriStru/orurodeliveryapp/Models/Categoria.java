@@ -21,6 +21,13 @@ public class Categoria {
         this.FotoUrl = FotoUrl;
     }
 
+    public Categoria(String categoria_id, String FotoUrl) {
+        this.categoria_id = categoria_id;
+        this.Nombre = Nombre;
+        this.Descripcion = Descripcion;
+        this.FotoUrl = FotoUrl;
+    }
+
     public String getCategoria_id() {
         return categoria_id;
     }

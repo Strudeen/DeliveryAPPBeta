@@ -10,7 +10,20 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@color/backgroundColor"
         android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/categoriastext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Categorias"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabDots" />
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/my_toolbar"
             android:layout_width="match_parent"
@@ -29,13 +42,14 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabDots"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/picker"
             app:tabBackground="@drawable/tab_selector"
             android:layout_margin="0dp"
+            android:background="@color/colorWhiter"
             app:tabIndicator="@drawable/tab_indicator_default"
             app:tabIndicatorGravity="center"
             app:tabGravity="center"/>
@@ -57,11 +71,11 @@
             android:id="@+id/recyclerviewCategorias"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/backgroundColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/backgroundColor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tabDots"
+            app:layout_constraintTop_toBottomOf="@+id/categoriastext"
             tools:listitem="@layout/categorias_card" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

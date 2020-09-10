@@ -6,12 +6,16 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.CriStru.orurodeliveryapp.Adapters.Categorias.ItemClickSupport;
+import com.CriStru.orurodeliveryapp.Adapters.Productos.ItemClickSupportProductos;
 import com.CriStru.orurodeliveryapp.Adapters.Productos.ProductosAdapter;
 import com.CriStru.orurodeliveryapp.Models.Producto;
 import com.google.firebase.database.DataSnapshot;
@@ -49,14 +53,16 @@ public class SearchActivity extends AppCompatActivity {
         //adapterProducto = new ProductosAdapter(R.layout.productos_card,list,getApplicationContext());
         //rv.setAdapter(adapterProducto);
 
+
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        Producto producto = snapshot.getValue(Producto.class);
+                        //Producto producto = snapshot.getValue(Producto.class);
+                        Producto producto = new Producto(snapshot.child("nombre").getValue().toString(),snapshot.child("descripcion").getValue().toString(),snapshot.child("fotoUrl").getValue().toString(),Integer.parseInt(snapshot.child("stock").getValue().toString()),Float.parseFloat(snapshot.child("precio").getValue().toString()),snapshot.getKey());
                         list.add(producto);
-
                     }
 //                    adapterProducto.notifyDataSetChanged();
                 }
@@ -71,16 +77,16 @@ public class SearchActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                Log.d("StringBus",query);
+                if (!query.equals("") && query != "" && query !=null){
+                    buscar(query);
+                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
-                Log.d("StringBus",s);
-                if (!s.equals("") && s != "" && s !=null){
-                    buscar(s);
 
-                }
                 return false;
             }
         });
@@ -99,6 +105,15 @@ public class SearchActivity extends AppCompatActivity {
             }
             ProductosAdapter productosAdapter = new ProductosAdapter(R.layout.productos_card,milista,getApplicationContext());
             rv.setAdapter(productosAdapter);
+            ItemClickSupportProductos.addTo(rv).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                @Override
+                public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                    TextView idProducto = (TextView) v.findViewById(R.id.tvIdProducto);
+                    Intent intent = new Intent(SearchActivity.this, ProductosActivity.class);
+                    intent.putExtra("idProducto", idProducto.getText().toString());
+                    startActivity(intent);
+                }
+            });
         }
     }
 }

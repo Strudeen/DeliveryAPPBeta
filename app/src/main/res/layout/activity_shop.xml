@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="TextView"
+            android:text="0.0 Bs"
             android:textStyle="bold"
             android:textColor="@color/colorWhiter"
             app:layout_constraintBottom_toBottomOf="parent"

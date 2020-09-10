@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/shop_Button" android:title="Carrito de Compras" android:icon="@drawable/shop_kart"></item>
     <item android:id="@+id/direcciones_fav" android:title="Mis lugares Favoritos" android:icon="@drawable/ic_location"></item>
+    <item android:id="@+id/goFacebook" android:title="Siguenos en Facebook" android:icon="@drawable/ic_facebook_asset"></item>
     <item android:id="@+id/test2" android:title="Acerca de Nosotros" android:icon="@drawable/ic_infob"></item>
     <item android:id="@+id/logout_Button" android:title="Desconectarse" android:icon="@drawable/ic_logout"></item>
-
 </menu>
