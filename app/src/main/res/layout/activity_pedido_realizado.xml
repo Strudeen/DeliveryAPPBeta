@@ -3,29 +3,47 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/textura_amarillo"
     android:layout_height="match_parent"
     tools:context=".PedidoRealizadoActivity">
+
+    <TextView
+        android:id="@+id/tvAgradecimiento"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="cursive"
+        android:text="¡Gracias por tu preferencia Marcos!"
+        android:textAlignment="center"
+        android:textColor="#003c5a"
+        android:textSize="80dp"
+        android:textStyle="bold"
+        android:lineSpacingMultiplier="0.75"
+        app:layout_constraintBottom_toTopOf="@+id/imageView5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/icon_bamboo_blue" />
+
+    <ImageView
+        android:id="@+id/buttonVolver"
+        android:layout_width="53dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:tint="#003c5a"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_success" />
+        app:srcCompat="@drawable/ic_logout" />
 
-    <TextView
-        android:id="@+id/tvAgradecimiento"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gracias amixer"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:textColor="#003c5a"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

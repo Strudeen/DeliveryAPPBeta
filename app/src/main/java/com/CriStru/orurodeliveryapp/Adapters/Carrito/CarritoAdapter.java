@@ -70,7 +70,7 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvNombre,tvPrecio,tvIdProducto,tvStock,tvMaxStock;
         ImageView imageViewProducto;
-        Button btnMas,btnMenos,btnEliminar;
+        ImageView btnMas,btnMenos,btnEliminar;
         List<Carrito> carritos;
         Carrito producto;
         View view;
@@ -84,9 +84,9 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
             this.tvStock=(TextView) view.findViewById(R.id.tvStockCarritoCard);
             this.imageViewProducto=(ImageView) view.findViewById(R.id.imageViewCarritoCard);
             this.tvMaxStock = (TextView) view.findViewById(R.id.tvMaxStockCarritoCard);
-            this.btnMas = (Button) view.findViewById(R.id.incrementar_button);
-            this.btnMenos = (Button) view.findViewById(R.id.decrementar_button);
-            this.btnEliminar = (Button) view.findViewById(R.id.borrar_button);
+            this.btnMas = (ImageView) view.findViewById(R.id.incrementar_button);
+            this.btnMenos = (ImageView) view.findViewById(R.id.decrementar_button);
+            this.btnEliminar = (ImageView) view.findViewById(R.id.borrar_button);
             this.btnMas.setOnClickListener(this);
             this.btnMenos.setOnClickListener(this);
 
@@ -109,7 +109,6 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
 
                     List<Carrito> data = Carrito.listAll(Carrito.class);
                     adapter.set(data);
-                    Toast.makeText(context, "Data deleted", Toast.LENGTH_SHORT).show();
                 }
             });
             this.btnMas.setOnClickListener(new View.OnClickListener() {

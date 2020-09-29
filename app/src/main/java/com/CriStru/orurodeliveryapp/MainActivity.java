@@ -320,6 +320,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem menuItem = menu.findItem(R.id.add);
+        MenuItem menuItem2 = menu.findItem(R.id.watch_list);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         dbOruro.child("Usuario").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -327,13 +328,17 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 if (dataSnapshot.exists()){
                     if (dataSnapshot.child("tipo").getValue().toString().equals("USR")){
                         menuItem.setVisible(false);
+                        menuItem2.setVisible(false);
                         txtTypeUser.setText("Cliente");
                         menuItem.setEnabled(false);
+                        menuItem2.setEnabled(false);
                     }
                     else if (dataSnapshot.child("tipo").getValue().toString().equals("ADM")){
                         menuItem.setVisible(true);
+                        menuItem2.setVisible(true);
                         txtTypeUser.setText("Administrador");
                         menuItem.setEnabled(true);
+                        menuItem2.setEnabled(true);
                     }
                 }
             }
@@ -358,6 +363,10 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             case R.id.search:
                 Intent intent2 = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent2);
+                return true;
+            case R.id.watch_list:
+                Intent intent3 = new Intent(MainActivity.this, RepartidorActivity.class);
+                startActivity(intent3);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -36,7 +36,7 @@ import java.util.ArrayList;
 public class SubCategoriasActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private DatabaseReference mDataBase;
-    private TextView tvNombreCategoria;
+    private TextView tvNombreCategoria, tvEmpezar;
     private String idCategoria;
     private Bundle extras;
     private SubCategoriasAdapter mAdapter;
@@ -68,9 +68,11 @@ public class SubCategoriasActivity extends AppCompatActivity {
         mDataBase=FirebaseDatabase.getInstance().getReference();
         tvNombreCategoria=findViewById(R.id.tvNombreCategoriaSub);
         extras=getIntent().getExtras();
+        tvEmpezar = findViewById(R.id.textviewEmpezar);
         mShopAction = findViewById(R.id.shopFloating_Button3);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbarSubcat);
         setSupportActionBar(myToolbar);
+
         final Drawable menuIcon = getResources().getDrawable(R.drawable.ic_back);
         menuIcon.setColorFilter(getResources().getColor(R.color.colorWhiter), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(menuIcon);
@@ -96,6 +98,7 @@ public class SubCategoriasActivity extends AppCompatActivity {
                 bundle.putString("IDSUBCATEGORIA",id);
                 Fragment fragment=new ProductosFragment();
                 fragment.setArguments(bundle);
+                tvEmpezar.setVisibility(View.GONE);
                 getSupportFragmentManager().popBackStack();
                 getSupportFragmentManager().beginTransaction().add(R.id.FragmentHolder,fragment).addToBackStack(null).commit();
             }

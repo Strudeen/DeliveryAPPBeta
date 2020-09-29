@@ -182,6 +182,10 @@ public class DetallesPedidoActivity extends AppCompatActivity implements OnMapRe
         switch (item.getItemId()) {
             case R.id.tomar_pedido:
                 tomarPedido();
+                SharedPreferences sharedPref1 = this.getPreferences(Context.MODE_PRIVATE);
+                String token = sharedPref1.getString("token", "0");
+                sendNotifyToClient(token,"Pedido en Camino!","Tu pedido fué tomado por uno de nuestros repartidores! Debes estar atento a tus notificaciones!");
+                Toast.makeText(this, "Haz enviado una notificación", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.completar_pedido:
                 mDatabaseReference.child("Pedidos").child(idPedido).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -204,8 +208,8 @@ public class DetallesPedidoActivity extends AppCompatActivity implements OnMapRe
                 return true;
             case R.id.enviar_notificacion:
                 SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-                String token = sharedPref.getString("token", "0");
-                sendNotifyToClient(token);
+                String token1 = sharedPref.getString("token", "0");
+                sendNotifyToClient(token1,"Pedido muy cerca!","Tu pedido está a 5 minutos de ti! Debes estar atento!");
                 Toast.makeText(this, "Haz enviado una notificación", Toast.LENGTH_SHORT).show();
                 return true;
             default:
@@ -217,8 +221,9 @@ public class DetallesPedidoActivity extends AppCompatActivity implements OnMapRe
         mDatabaseReference.child("Pedidos").child(idPedido).child("DLY").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists() && !dataSnapshot.getValue().toString().equals("0")){
                     Toast.makeText(DetallesPedidoActivity.this, "El pedido ya ha sido tomado", Toast.LENGTH_SHORT).show();
+
                 }
                 else{
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -281,15 +286,15 @@ public class DetallesPedidoActivity extends AppCompatActivity implements OnMapRe
         });
     }
 
-    private void sendNotifyToClient(String token) {
+    private void sendNotifyToClient(String token,String titulo, String detalle) {
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JSONObject json = new JSONObject();
         try {
             json.put("to", token);
             JSONObject notify = new JSONObject();
-            notify.put("titulo", "soy un titulo xD");
-            notify.put("detalle", "tu pedido xD");
+            notify.put("titulo", titulo);
+            notify.put("detalle", detalle);
 
             json.put("data", notify);
             String URL = "https://fcm.googleapis.com/fcm/send";

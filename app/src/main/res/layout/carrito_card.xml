@@ -77,23 +77,34 @@
             app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="parent" />
 
-        <Button
+        <ImageView
             android:id="@+id/decrementar_button"
-            android:layout_width="44dp"
-            android:layout_height="42dp"
+            android:layout_width="34dp"
+            android:layout_height="32dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
+            android:textStyle="bold"
+            android:background="@color/colorWhiter"
+            android:elevation="0dp"
+            android:tint="@color/mainColor"
+            android:src="@drawable/ic_decrementar"
+            android:textColor="@color/bambooAmarillo"
             android:text="-" />
 
-        <Button
+        <ImageView
             android:id="@+id/incrementar_button"
-            android:layout_width="44dp"
-            android:layout_height="42dp"
+            android:layout_width="34dp"
+            android:layout_height="32dp"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:textStyle="bold"
+            android:elevation="0dp"
+            android:src="@drawable/ic_incrementar"
+            android:tint="@color/mainColor"
+            android:textColor="@color/bambooAmarillo"
             android:layout_toStartOf="@+id/decrementar_button"
             android:text="+" />
 
@@ -108,13 +119,18 @@
             android:layout_toEndOf="@+id/imageViewCarritoCard"
             android:text="Cantidad Actual" />
 
-        <Button
+        <ImageView
             android:id="@+id/borrar_button"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
+            android:layout_width="34dp"
+            android:layout_height="32dp"
+            android:textStyle="bold"
+            android:background="@color/colorWhiter"
+            android:textColor="@color/bambooAmarillo"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_marginEnd="0dp"
+            android:tint="@color/mainColor"
+            android:src="@drawable/ic_eliminar"
             android:layout_marginTop="0dp"
             android:text="X" />
 

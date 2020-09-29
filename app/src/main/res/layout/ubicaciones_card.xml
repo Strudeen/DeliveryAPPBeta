@@ -3,15 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
     android:layout_height="60dp">
 <androidx.cardview.widget.CardView
     android:id="@+id/ubicaciones_cardxd"
+    android:background="@drawable/bordes_curveados_cards"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="60dp">
 
         <TextView
             android:id="@+id/nombreUbicacion_txt"
@@ -35,14 +37,15 @@
             android:text=""
             android:textSize="0dp" />
 
-        <Button
+        <ImageView
             android:id="@+id/eliminar_ubicacion_btn"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="34dp"
+            android:layout_height="32dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginBottom="0dp"
-            android:text="X" />
+            android:src="@drawable/ic_eliminar"
+            android:tint="@color/mainColor" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

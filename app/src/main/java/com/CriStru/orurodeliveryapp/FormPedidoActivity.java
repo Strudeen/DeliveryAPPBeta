@@ -73,7 +73,6 @@ public class FormPedidoActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        myToolbar.setTitle("Registrarse");
         final Drawable menuIcon = getResources().getDrawable(R.drawable.ic_back);
         menuIcon.setColorFilter(getResources().getColor(R.color.colorWhiter), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(menuIcon);
@@ -219,6 +218,7 @@ public class FormPedidoActivity extends AppCompatActivity {
                     Log.d("precioTotal",preciototal);
                     mDatabaseReference.child("Pedidos").child(finalIdPedido).child("Precio Total").setValue(preciototal);
                     mDatabaseReference.child("Pedidos").child(finalIdPedido).child("idUbicacion").setValue(finalIdUbicacion);
+                    mDatabaseReference.child("Pedidos").child(finalIdPedido).child("DLY").setValue("0");
 
                     Carrito.deleteAll(Carrito.class);
                     myEditor.putString("direccion", "");

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -56,13 +57,13 @@ public class UbicacionesAdapter extends RecyclerView.Adapter<UbicacionesAdapter.
         public View view;
         public CardView cardView;
         public TextView nombreUbicaciones_txt,idUbicacion_txt;
-        public Button borrarUbicaciones_btn;
+        public ImageView borrarUbicaciones_btn;
         public ViewHolder(View view){
             super(view);
             this.view = view;
             nombreUbicaciones_txt = (TextView) view.findViewById(R.id.nombreUbicacion_txt);
             idUbicacion_txt = (TextView) view.findViewById(R.id.idUbicaciontxt);
-            borrarUbicaciones_btn = (Button) view.findViewById(R.id.eliminar_ubicacion_btn);
+            borrarUbicaciones_btn = (ImageView) view.findViewById(R.id.eliminar_ubicacion_btn);
             cardView = (CardView) view.findViewById(R.id.ubicaciones_cardxd);
             cardView.setOnClickListener(this);
             borrarUbicaciones_btn.setOnClickListener(this);

@@ -152,7 +152,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                     Log.d("Success", "DisplayName"+user.getDisplayName());
                                     DisplayName = user.getDisplayName();
                                     Log.d("Success", "createUserWithEmail:success");
+
                                     SaveDataUser(user);
+
                                     //sendEmailVerification(user);
                                     Log.d("Success", "Email Verification");
                                     progressBarSignUp.setVisibility(View.INVISIBLE);
@@ -189,6 +191,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     else {
                         Usuario usuario=new Usuario(etNombre.getText().toString()+" "+etApellido.getText().toString(), "USR");
                         tableUsuario.child(Uid).setValue(usuario);
+                        tableUsuario.child(Uid).child("token").setValue(Fcm.getToken(getApplicationContext()));
+
                         Log.d("Success", "Save user data");
                     }
                 }

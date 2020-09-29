@@ -89,12 +89,15 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         mAuth = FirebaseAuth.getInstance();
         mCallbackManager = CallbackManager.Factory.create();
 
+        Log.d("prueba", "xd");
 
         facebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LoginManager.getInstance().logInWithReadPermissions(SignInActivity.this,Arrays.asList("email", "public_profile"));
+                Log.d("onclick", "facebook:click:");
                 LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         Log.d("djvbdfjbv", "facebook:onSuccess:" + loginResult);
@@ -104,11 +107,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onCancel() {
                         Toast.makeText(SignInActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
+                        Log.d("cancelfb", "facebook:cancel:");
                     }
 
                     @Override
                     public void onError(FacebookException error) {
                         Toast.makeText(SignInActivity.this, "Error " + error.toString(), Toast.LENGTH_SHORT).show();
+                        Log.d("errorfb", "facebook:error:" + error);
                     }
                 });
 
@@ -156,7 +161,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         Log.d("enta",""+requestCode);
         if (requestCode == RC_SIGN_IN) {
@@ -221,7 +226,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             tableUsuario.child(user.getUid()).child("tipo").setValue("USR");
                             String fbemail = user.getEmail();
                             user.updateEmail(fbemail);
-                            Log.d("emailfb",  user.getEmail());
+                            Log.d("emailfb", "xd"+  user.getEmail());
+                            mDatabaseReference.child("Usuario").child(user.getUid()).child("token").setValue(Fcm.getToken(getApplicationContext()));
                             //System.out.println(profile.getProfilePictureUri(20,20)); System.out.println(profile.getLinkUri());
                             startActivity(new Intent(SignInActivity.this, MainActivity.class));
                         } else {

@@ -2,8 +2,11 @@ package com.CriStru.orurodeliveryapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,12 +46,26 @@ public class ProductosActivity extends AppCompatActivity {
         setupView();
         callData();
 
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        final Drawable menuIcon = getResources().getDrawable(R.drawable.ic_back);
+        menuIcon.setColorFilter(getResources().getColor(R.color.colorWhiter), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(menuIcon);
+        myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         mShopAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProductosActivity.this, ShopActivity.class);
                 startActivity(intent);
-                Toast.makeText(ProductosActivity.this, "Carritp", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -142,8 +159,16 @@ public class ProductosActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     tvNombre.setText(dataSnapshot.child("nombre").getValue().toString());
                     tvDescripcion.setText(dataSnapshot.child("descripcion").getValue().toString());
-                    tvPrecio.setText(Float.parseFloat(dataSnapshot.child("precio").getValue().toString()) + " Bs");
-                    tvStock.setText("Stock: " + Integer.parseInt(dataSnapshot.child("stock").getValue().toString()));
+                    String precio= "Precio Unidad    " + "Bs. " + Float.parseFloat(dataSnapshot.child("precio").getValue().toString());
+                    tvPrecio.setText(precio);
+                    int stock = Integer.parseInt(dataSnapshot.child("stock").getValue().toString());
+                    if (stock > 0){
+                        tvStock.setText("En Stock " + stock + " unid.");
+                    }
+                    else{
+                        tvStock.setText("No Disponible");
+                    }
+
                     Glide.with(getApplicationContext()).load(dataSnapshot.child("fotoUrl").getValue().toString()).into(photoProduct);
                     String id=dataSnapshot.child("subCategoria").getValue().toString();
                     mDatabaseReference.child("SubCategorias").child(id).addValueEventListener(new ValueEventListener() {

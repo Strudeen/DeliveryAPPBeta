@@ -57,7 +57,6 @@ public class ProductosFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context,RecyclerView.VERTICAL,false));
         LlenarDatos();
-        Toast.makeText(context, idSubcategoria, Toast.LENGTH_SHORT).show();
         ItemClickSupportProductos.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {

@@ -6,6 +6,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.Uri;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -66,7 +69,7 @@ public class Fcm extends FirebaseMessagingService {
         builder.setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(titulo)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.shop_kart)
                 .setContentText(detalle)
                 .setContentIntent(clicknoti())
                 .setContentInfo("nuevo");
@@ -100,7 +103,7 @@ public class Fcm extends FirebaseMessagingService {
         builder.setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(titulo)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.shop_kart)
                 .setContentText(detalle)
                 .setContentIntent(clicknoti())
                 .setContentInfo("nuevo");

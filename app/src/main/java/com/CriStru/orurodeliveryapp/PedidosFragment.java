@@ -81,6 +81,8 @@ public class PedidosFragment extends Fragment {
                 else {
                     intent.putExtra("IdPedido",getPedidosArray2.get(i));
                 }
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }
         });
@@ -90,30 +92,82 @@ public class PedidosFragment extends Fragment {
     }
 
     private void LlenarDatos() {
-        mDataBase.child("Pedidos").addValueEventListener(new ValueEventListener() {
+        mDataBase.child("Pedidos").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null){
+                data.clear();
+                pedidosArray.clear();
+                pedidosArray2.clear();
+                getPedidosArray.clear();
+                getPedidosArray2.clear();
+                if (dataSnapshot.exists()){
+                    data.clear();
                     pedidosArray.clear();
                     pedidosArray2.clear();
                     getPedidosArray.clear();
                     getPedidosArray2.clear();
-                    data.clear();
                     i=0;
                     for (DataSnapshot ds:
                             dataSnapshot.getChildren()) {
                         String id=ds.getKey();
+                        data.clear();
                         String dly="";
-                        boolean estado = false;
                         if (ds.child("DLY").exists()){
                             dly = ds.child("DLY").getValue().toString();
                             mDataBase.child("Usuario").child(dly).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.exists()){
-                                        SharedPreferences.Editor editor = sharedPref.edit();
-                                        editor.putString("nombre_dly", dataSnapshot.child("nombre").getValue().toString());
-                                        editor.commit();
+                                    if (dataSnapshot.exists() || ds.child("DLY").getValue().toString().equals("0")){
+                                        pedidosArray.clear();
+                                        pedidosArray2.clear();
+                                        getPedidosArray.clear();
+                                        getPedidosArray2.clear();
+                                        if (dataSnapshot.exists()){
+                                            if(ds.child("estado").exists() && ds.child("estado").getValue().toString().equals("true")){
+                                                data.add(new Pedido(id,true,dataSnapshot.child("nombre").getValue().toString()));
+                                                Log.d("data",data.get(i).getDly() +i + "true");
+                                                i++;
+                                            }
+                                            else {
+                                                data.add(new Pedido(id,false,dataSnapshot.child("nombre").getValue().toString()));
+                                                Log.d("data",data.get(i).getDly() + i + "false");
+                                                i++;
+                                            }
+                                        }
+                                        else {
+                                            data.add(new Pedido(id,false,"0"));
+                                            Log.d("data",data.get(i).getDly()+i);
+                                            i++;
+                                        }
+                                    }
+
+                                    for (int j = 0; j<data.size();j++) {
+                                        if (data.get(j).isCompletado()){
+                                            pedidosArray.add("Pedido: "+j+"\n Completado por: "+ data.get(j).getDly());
+                                            getPedidosArray.add(data.get(j).getId());
+                                        }
+                                        else{
+                                            if (data.get(j).getDly().equals("0")){
+                                                pedidosArray2.add("Pedido: "+j);
+                                                getPedidosArray2.add(data.get(j).getId());
+                                            }
+                                            else {
+                                                pedidosArray2.add("Pedido: "+j+ "\n Tomado por: "+data.get(j).getDly());
+                                                Log.d("nombre_dly",data.get(j).getDly());
+                                                getPedidosArray2.add(data.get(j).getId());
+                                            }
+                                        }
+                                    }
+                                    if (pedidosState == true){
+                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+                                                android.R.layout.simple_list_item_1, android.R.id.text1,pedidosArray);
+                                        adapter.notifyDataSetChanged();
+                                        listView.setAdapter(adapter);
+                                    }else {
+                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+                                                android.R.layout.simple_list_item_1, android.R.id.text1,pedidosArray2);
+                                        adapter.notifyDataSetChanged();
+                                        listView.setAdapter(adapter);
                                     }
                                 }
 
@@ -122,44 +176,10 @@ public class PedidosFragment extends Fragment {
 
                                 }
                             });
-                            if(ds.child("estado").exists() && ds.child("estado").getValue().toString().equals("true")){
-                                estado = true;
-                            }
-                            dly = sharedPref.getString("nombre_dly", "");
-
-                        }
-                        data.add(new Pedido(id,estado,dly));
-                        i++;
-                    }
-                    for (int j = 0; j<data.size();j++) {
-                        if (data.get(j).isCompletado()){
-                            pedidosArray.add("Pedido: "+j+"\n Completado por: "+ data.get(j).getDly());
-                            getPedidosArray.add(data.get(j).getId());
-                        }
-                        else{
-                            if (data.get(j).getDly().equals("")){
-                                pedidosArray2.add("Pedido: "+j);
-                                getPedidosArray2.add(data.get(j).getId());
-                            }
-                            else {
-                                pedidosArray2.add("Pedido: "+j+ "\n Tomado por: "+data.get(j).getDly());
-                                getPedidosArray2.add(data.get(j).getId());
-                            }
 
                         }
                     }
-                    if (pedidosState == true){
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
-                                android.R.layout.simple_list_item_1, android.R.id.text1,pedidosArray);
-                        adapter.notifyDataSetChanged();
-                        listView.setAdapter(adapter);
-                    }else {
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
-                                android.R.layout.simple_list_item_1, android.R.id.text1,pedidosArray2);
-                        adapter.notifyDataSetChanged();
-                        listView.setAdapter(adapter);
-                    }
-            }
+                }
             }
 
             @Override

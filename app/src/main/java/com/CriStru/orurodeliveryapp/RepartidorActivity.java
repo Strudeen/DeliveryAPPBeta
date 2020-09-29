@@ -17,6 +17,11 @@ import com.facebook.login.LoginManager;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class RepartidorActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -34,6 +39,8 @@ public class RepartidorActivity extends AppCompatActivity {
         bundle.putBoolean("PEDIDOSESTADO",false);
 
 
+
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
@@ -43,7 +50,27 @@ public class RepartidorActivity extends AppCompatActivity {
         getSupportFragmentManager().popBackStack();
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_holder,fragment).addToBackStack(null).commit();
 
+        DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("Pedidos").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try{
+                    fragment=new PedidosFragment();
+                    bundle.putBoolean("PEDIDOSESTADO",false);
+                    fragment.setArguments(bundle);
+                    getSupportFragmentManager().popBackStackImmediate();
+                    getSupportFragmentManager().beginTransaction().add(R.id.fragment_holder,fragment).addToBackStack(null).commitAllowingStateLoss();
+                }catch (IllegalStateException ignored) {
+                    // There's no way to avoid getting this if saveInstanceState has already been called.
+                }
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         tabLayout = findViewById(R.id.tabLayout);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
