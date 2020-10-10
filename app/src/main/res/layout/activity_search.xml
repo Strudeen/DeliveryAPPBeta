@@ -6,13 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".SearchActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="0dp"
+        android:background="@color/mainColor"
+        android:elevation="4dp"
+        app:titleTextColor="#fff"
+        app:title="Buscador"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:defaultQueryHint="Buscar"
         app:layout_constraintBottom_toTopOf="@+id/rv"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
 
     </androidx.appcompat.widget.SearchView>
 

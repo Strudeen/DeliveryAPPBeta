@@ -37,7 +37,7 @@
         android:layout_width="290dp"
         android:layout_height="34dp"
         android:layout_marginBottom="24dp"
-        android:text="Indica tu ubicacion de entrega para un mejor servicio."
+        android:text="Indica tu ubicación de entrega para un mejor servicio."
         android:textAlignment="center"
         android:textColor="#003c5a"
         map:layout_constraintBottom_toTopOf="@+id/editTextNombreUbicacion"

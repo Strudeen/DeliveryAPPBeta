@@ -110,9 +110,9 @@ public class SubCategoriasActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot!=null){
-                    nombreCategoria=dataSnapshot.child("nombre").getValue().toString();
+//                    nombreCategoria=dataSnapshot.child("nombre").getValue().toString();
                     Log.d("idCategoria",idCategoria);
-                    tvNombreCategoria.setText(nombreCategoria);
+               //     tvNombreCategoria.setText(nombreCategoria);
                 }
             }
             @Override

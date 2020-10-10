@@ -69,7 +69,8 @@
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="com.CriStru.orurodeliveryapp" />
 
-        <activity android:name=".SearchActivity" />
+        <activity android:name=".SearchActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".UI.ProductosDialogActivity"
             android:excludeFromRecents="true"

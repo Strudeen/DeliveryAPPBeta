@@ -58,7 +58,7 @@
             android:id="@+id/picker"
             android:layout_width="match_parent"
             android:layout_margin="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="140dp"
             app:dsv_orientation="horizontal"
             android:background="@color/colorWhiter"
             app:layout_constraintEnd_toEndOf="parent"
