@@ -61,8 +61,10 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+
         TextView tvNombre,tvPrecio,tvIdProducto,tvStock;
-        ImageView imageViewProducto,editarProducto;
+        ImageView imageViewProducto,editarProducto,borrarProducto;
         View view;
         public DatabaseReference mDatabase;
         public FirebaseAuth mAuth;
@@ -77,7 +79,9 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.View
             this.tvStock=(TextView) view.findViewById(R.id.tvStockCard);
             this.imageViewProducto=(ImageView) view.findViewById(R.id.imageViewProductosCard);
             this.editarProducto = (ImageView) view.findViewById(R.id.editarProducto);
+            this.borrarProducto = (ImageView) view.findViewById(R.id.borrarProducto);
             this.editarProducto.setOnClickListener(this);
+            this.borrarProducto.setOnClickListener(this);
             mDatabase = FirebaseDatabase.getInstance().getReference().child("Usuario");
             mAuth = FirebaseAuth.getInstance();
             mUser = mAuth.getCurrentUser();
@@ -89,11 +93,17 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.View
                         Log.d("TIPO",tipo);
                         if (tipo.equals("USR")){
                             Log.d("TIPO",tipo);
+                            borrarProducto.setVisibility(View.GONE);
+                            borrarProducto.setEnabled(false);
+                            borrarProducto.setClickable(false);
                             editarProducto.setVisibility(View.GONE);
                             editarProducto.setEnabled(false);
                             editarProducto.setClickable(false);
                         }
                         else if (tipo.equals("ADM")){
+                            borrarProducto.setVisibility(View.VISIBLE);
+                            borrarProducto.setEnabled(true);
+                            borrarProducto.setClickable(true);
                             editarProducto.setVisibility(View.VISIBLE);
                             editarProducto.setEnabled(true);
                             editarProducto.setClickable(true);
@@ -117,6 +127,10 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.View
                     intent.putExtra("idCategoriaSubD","");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
+                    break;
+                case R.id.borrarProducto:
+                    DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+                    mDatabaseReference.child("Producto").child(tvIdProducto.getText().toString()).removeValue();
                     break;
             }
         }

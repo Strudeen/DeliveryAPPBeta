@@ -15,11 +15,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.CriStru.orurodeliveryapp.Adapters.Carrito.CarritoAdapter;
+import com.CriStru.orurodeliveryapp.Adapters.Carrito.CarritoAdapterListView;
 import com.CriStru.orurodeliveryapp.Adapters.Categorias.CategoriasAdapter;
 import com.CriStru.orurodeliveryapp.Models.Carrito;
 import com.CriStru.orurodeliveryapp.Models.Categoria;
@@ -32,11 +35,13 @@ import java.util.List;
 
 public class ShopActivity extends AppCompatActivity implements DataTransferInterface {
 
-    private CarritoAdapter mAdapter;
-    private RecyclerView mRecyclerView;
-    private TextView tvprecioTotal;
+  //  private CarritoAdapter mAdapter;
+    private CarritoAdapterListView mAdapterCarrito;
+    private ListView mListView;
+   // private RecyclerView mRecyclerView;
+    private TextView tvprecioTotal, tvdetalleprecio;
     private ArrayList<Carrito> categoriaList;
-    private Float precioTotal=0f;
+    private Float precioTotal;
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
 
@@ -46,15 +51,29 @@ public class ShopActivity extends AppCompatActivity implements DataTransferInter
         super.onCreate(savedInstanceState);
         SugarContext.init(this);
         setContentView(R.layout.activity_shop);
-        mRecyclerView = findViewById(R.id.recyclerCarrito);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //mRecyclerView = findViewById(R.id.recyclerCarrito);
+        //mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+
+
+
+
         List<Carrito> carritos = Carrito.listAll(Carrito.class);
         Log.d("PrecioTotal",""+precioTotal);
         categoriaList = new ArrayList<>(carritos);
-        mAdapter = new CarritoAdapter(R.layout.carrito_card,categoriaList,ShopActivity.this,this);
-        precioTotal=mAdapter.precioTotal;
-        mRecyclerView.setAdapter(mAdapter);
+
+        mListView = findViewById(R.id.listaCarrito);
+        mAdapterCarrito = new CarritoAdapterListView(this, categoriaList, this);
+        mListView.setAdapter(mAdapterCarrito);
+
+       // mAdapter = new CarritoAdapter(R.layout.carrito_card,categoriaList,ShopActivity.this,this);
+     //   precioTotal=mAdapter.precioTotal;
+        //mRecyclerView.setAdapter(mAdapter);
+
         tvprecioTotal = findViewById(R.id.tvPrecioTotal);
+        tvdetalleprecio = findViewById(R.id.textViewDetallePrecio);
         mToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(mToolbar);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -72,14 +91,52 @@ public class ShopActivity extends AppCompatActivity implements DataTransferInter
             }
         });
 
-        tvprecioTotal.setText(precioTotal + " Bs");
+       // tvprecioTotal.setText(precioTotal + " Bs");
+
+
 
     }
 
+
+
     @Override
     public void onSetValues(float al) {
-        tvprecioTotal.setText(""+al + " Bs");
+
         precioTotal = al;
+        Log.d("precio", ""+al);
+
+        if (sumaPrecioTotal() < 80f){
+            float faltaP = 80f - sumaPrecioTotal();
+         //   String[] detalle = precioTotal.getText().toString().split(" ");
+       //     float faltaP = 80f - Float.parseFloat(detalle[0]);
+            float total = sumaPrecioTotal();
+            total += 5;
+            tvprecioTotal.setText(""+total + " Bs");
+            tvdetalleprecio.setText("Te falta " + faltaP + ".bs Para que tu envío sea gratis, Costo de Envio: 5.bs");
+            tvdetalleprecio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_error,0, 0, 0);
+            tvdetalleprecio.setTextColor(getResources().getColor(R.color.failure));
+        }
+
+        else {
+
+            tvprecioTotal.setText(""+sumaPrecioTotal() + " Bs");
+            tvdetalleprecio.setText("Tu envío ya es gratuito!");
+            tvdetalleprecio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_success,0, 0, 0);
+            tvdetalleprecio.setTextColor(getResources().getColor(R.color.success));
+        }
+
+        Log.d("precio", ""+al);
+    }
+
+    public float sumaPrecioTotal(){
+        List<Carrito> data = Carrito.listAll(Carrito.class);
+        float preciototalf= 0.0f;
+        for (int i = 0 ; i<data.size() ; i++){
+            preciototalf += data.get(i).getPrecio()*data.get(i).getMaxStock();
+        }
+
+        Log.d("msj", ""+preciototalf);
+       return preciototalf;
     }
 
     @Override
@@ -107,4 +164,5 @@ public class ShopActivity extends AppCompatActivity implements DataTransferInter
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }

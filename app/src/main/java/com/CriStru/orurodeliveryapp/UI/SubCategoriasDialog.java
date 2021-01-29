@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -140,7 +141,29 @@ public class SubCategoriasDialog extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+    public boolean ValidateForm() {
+
+        boolean valid = true;
+        String nombresub=nombreSubCategoria.getText().toString();
+        if (TextUtils.isEmpty(nombresub)){
+            nombreSubCategoria.setError("Este campo es obligatorio");
+            valid=false;
+        }else {
+            nombreSubCategoria.setError(null);
+        }
+        String descripcionsub = descripcionSubcategoria.getText().toString();
+        if (TextUtils.isEmpty(descripcionsub)){
+            descripcionSubcategoria.setError("Este campo es obligatorio");
+            valid = false;
+        }else {
+            descripcionSubcategoria.setError(null);
+        }
+        return  valid;
+    }
+
     private void uploadFile() {
+        if (!ValidateForm())
+            return;
         mProgressBarD.setVisibility(View.VISIBLE);
         if (mImageUri != null){
             StorageReference fileReference = mStorage.child(System.currentTimeMillis()+"."+getFileExtension(mImageUri));

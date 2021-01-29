@@ -287,12 +287,16 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         }
         if (id == R.id.goFacebook){
             // e.g. if your URL is https://www.facebook.com/EXAMPLE_PAGE, you should put EXAMPLE_PAGE at the end of this URL, after the ?
-          //  String YourPageURL = "https://www.facebook.com/Bamboo-109332024201855/";
-           // Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(YourPageURL));
-           startActivity(newFacebookIntent(this.getPackageManager(), "https://www.facebook.com/Bamboo-109332024201855/"));
+            //  String YourPageURL = "https://www.facebook.com/Bamboo-109332024201855/";
+            // Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(YourPageURL));
+            startActivity(newFacebookIntent(this.getPackageManager(), "https://www.facebook.com/Bamboo-109332024201855/"));
         }
         if (id == R.id.direcciones_fav){
             Intent intent = new Intent(this, UbicacionesSavedActivity.class);
+            startActivity(intent);
+        }
+        if (id == R.id.test2){
+            Intent intent = new Intent(this, about_us.class);
             startActivity(intent);
         }
         return true;

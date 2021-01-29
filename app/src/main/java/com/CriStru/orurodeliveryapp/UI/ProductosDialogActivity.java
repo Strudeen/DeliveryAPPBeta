@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -158,6 +159,8 @@ public class ProductosDialogActivity extends AppCompatActivity {
     }
 
     private void uploadFile() {
+        if (!ValidateForm())
+            return;
         mProgressBarD.setVisibility(View.VISIBLE);
         if (mImageUri != null){
             StorageReference fileReference = mStorage.child(System.currentTimeMillis()+"."+getFileExtension(mImageUri));
@@ -225,6 +228,41 @@ public class ProductosDialogActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent,PICK_IMAGE_REQUEST);
     }
+
+    public boolean ValidateForm() {
+
+        boolean valid = true;
+        String nombrep=nombre.getText().toString();
+        if (TextUtils.isEmpty(nombrep)){
+            nombre.setError("Este campo es obligatorio");
+            valid=false;
+        }else {
+            nombre.setError(null);
+        }
+        String descripcionp = descripcion.getText().toString();
+        if (TextUtils.isEmpty(descripcionp)){
+            descripcion.setError("Este campo es obligatorio");
+            valid = false;
+        }else {
+            descripcion.setError(null);
+        }
+        String preciop = precio.getText().toString();
+        if (TextUtils.isEmpty(preciop)){
+            precio.setError("Este campo es obligatorio");
+            valid = false;
+        }else {
+            precio.setError(null);
+        }
+        String stockp = stock.getText().toString();
+        if (TextUtils.isEmpty(stockp)){
+            stock.setError("Este campo es obligatorio");
+            valid = false;
+        }else {
+            stock.setError(null);
+        }
+        return  valid;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

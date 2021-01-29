@@ -59,7 +59,7 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
         holder.tvIdProducto.setText(carrito.getIdProducto());
         Glide.with(context).load(carrito.getFotoUrl()).into(holder.imageViewProducto);
         holder.tvMaxStock.setText("Cantidad Actual: "+carrito.getMaxStock());
-        holder.Bind(carrito,this);
+       // holder.Bind(carrito,this);
     }
 
     @Override
@@ -95,12 +95,19 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
         public void onClick(View view) {
 
         }
+/*
         public void Bind(final Carrito data,final CarritoAdapter adapter){
             precioTotal += data.getMaxStock()*data.getPrecio();
+
+            if (precioTotal < 80){
+                precioTotal += 5;
+            }
             dtInterface.onSetValues(precioTotal);
             Bundle bundle = new Bundle();
+
             bundle.putFloat("Cantidad",precioTotal);
-        //    Log.d("PrecioTotal", ""+precioTotal);
+                Log.d("PrecioTotal: ", ""+precioTotal);
+
             this.btnEliminar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -140,14 +147,14 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
                     }
                 }
             });
-        }
+        }*/
     }
 
     private void set(List<Carrito> data) {
-        this.carritoArrayList = (ArrayList<Carrito>) data;
+     //   this.carritoArrayList = (ArrayList<Carrito>) data;
         precioTotal = 0;
 
-       // Log.d("PrecioTotal", ""+precioTotal);
+         Log.d("PrecioTotal2: ", ""+precioTotal);
         notifyDataSetChanged();
     }
 }

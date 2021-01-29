@@ -11,13 +11,15 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".about_us"
+            android:excludeFromRecents="true"
+            android:theme="@style/AppDialogTheme"></activity>
 
         <service
             android:name=".Fcm"
@@ -27,16 +29,18 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".DetallesPedidoActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-        <activity android:name=".RepartidorActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-        <activity android:name=".PedidoRealizadoActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".UbicacionesSavedActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".DetallesPedidoActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity
+            android:name=".RepartidorActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity
+            android:name=".PedidoRealizadoActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".UbicacionesSavedActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -69,8 +73,9 @@
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="com.CriStru.orurodeliveryapp" />
 
-        <activity android:name=".SearchActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".SearchActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".UI.ProductosDialogActivity"
             android:excludeFromRecents="true"
@@ -83,8 +88,9 @@
             android:name=".UI.CategoriasDialogActivity"
             android:excludeFromRecents="true"
             android:theme="@style/AppDialogTheme" />
-        <activity android:name=".ProductosActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".ProductosActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".ShopActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -130,7 +136,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
