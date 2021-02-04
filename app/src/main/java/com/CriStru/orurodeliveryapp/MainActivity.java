@@ -78,6 +78,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         mToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(mToolbar);
 
+
+
+
+
+
         scrollView = findViewById(R.id.picker);
         scrollView.setMinimumHeight(pxToDp(1440));
 
@@ -104,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         txtTypeUser = headerView.findViewById(R.id.type_user);
         menuIcon.setColorFilter(getResources().getColor(R.color.colorWhiter), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(menuIcon);
+
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -317,7 +323,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+
         getMenuInflater().inflate(R.menu.menu_superior_icons, menu);
+        Drawable yourdrawable = menu.getItem(0).getIcon();
+        yourdrawable.mutate(); yourdrawable.setColorFilter(getResources().getColor(R.color.colorWhiter), PorterDuff.Mode.SRC_IN);
         return true;
     }
 
@@ -325,6 +335,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem menuItem = menu.findItem(R.id.add);
         MenuItem menuItem2 = menu.findItem(R.id.watch_list);
+        MenuItem menuItem3 = menu.findItem(R.id.user_add);
+        MenuItem menuItem4 = menu.findItem(R.id.actividad_pedidos);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         dbOruro.child("Usuario").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -333,16 +345,24 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                     if (dataSnapshot.child("tipo").getValue().toString().equals("USR")){
                         menuItem.setVisible(false);
                         menuItem2.setVisible(false);
+                        menuItem3.setVisible(false);
+                        menuItem4.setVisible(false);
                         txtTypeUser.setText("Cliente");
                         menuItem.setEnabled(false);
                         menuItem2.setEnabled(false);
+                        menuItem3.setVisible(false);
+                        menuItem4.setVisible(false);
                     }
                     else if (dataSnapshot.child("tipo").getValue().toString().equals("ADM")){
                         menuItem.setVisible(true);
                         menuItem2.setVisible(true);
+                        menuItem3.setVisible(true);
+                        menuItem4.setVisible(true);
                         txtTypeUser.setText("Administrador");
                         menuItem.setEnabled(true);
                         menuItem2.setEnabled(true);
+                        menuItem3.setVisible(true);
+                        menuItem4.setVisible(true);
                     }
                 }
             }
@@ -372,6 +392,13 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 Intent intent3 = new Intent(MainActivity.this, RepartidorActivity.class);
                 startActivity(intent3);
                 return true;
+            case R.id.user_add:
+                Intent intent4 = new Intent(MainActivity.this, add_user_admin.class);
+                startActivity(intent4);
+                return true;
+            case R.id.actividad_pedidos:
+                Intent intent5 = new Intent(MainActivity.this, Registro_pedidos.class);
+                startActivity(intent5);
             default:
                 return super.onOptionsItemSelected(item);
         }

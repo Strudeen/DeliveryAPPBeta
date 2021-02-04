@@ -17,9 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".about_us"
+        <activity android:name=".Registro_pedidos"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".add_user_admin"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".about_us"
             android:excludeFromRecents="true"
-            android:theme="@style/AppDialogTheme"></activity>
+            android:theme="@style/AppDialogTheme" />
 
         <service
             android:name=".Fcm"
@@ -31,10 +36,10 @@
 
         <activity
             android:name=".DetallesPedidoActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".RepartidorActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".PedidoRealizadoActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

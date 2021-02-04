@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.orm.SugarContext;
 import com.orm.SugarRecord;
@@ -176,6 +178,11 @@ public class FormPedidoActivity extends AppCompatActivity {
     }
 
     public void confirmarPedido(){
+
+        if (!ValidateForm()){
+            return;
+        }
+
         Log.d("precioTotal",sharedPref.getString("PrecioTotal","0"));
         String idPedido="";
         List<Carrito> carritos = Carrito.listAll(Carrito.class);
@@ -220,6 +227,8 @@ public class FormPedidoActivity extends AppCompatActivity {
                     mDatabaseReference.child("Pedidos").child(finalIdPedido).child("idUbicacion").setValue(finalIdUbicacion);
                     mDatabaseReference.child("Pedidos").child(finalIdPedido).child("DLY").setValue("0");
 
+                    mDatabaseReference.child("Pedidos").child(finalIdPedido).child("FechaPedido").setValue(ServerValue.TIMESTAMP);
+
                     Carrito.deleteAll(Carrito.class);
                     myEditor.putString("direccion", "");
                     myEditor.putString("referencia", "");
@@ -238,6 +247,35 @@ public class FormPedidoActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public boolean ValidateForm() {
+        boolean valid = true;
+
+        String direccion=direcciontxt.getText().toString();
+        if (TextUtils.isEmpty(direccion)){
+            direcciontxt.setError("Este campo es obligatorio");
+            valid=false;
+        }else {
+            direcciontxt.setError(null);
+        }
+
+        String referencia=referenciadirtxt.getText().toString();
+        if (TextUtils.isEmpty(referencia)){
+            referenciadirtxt.setError("Este campo es obligatorio");
+            valid=false;
+        }else {
+            referenciadirtxt.setError(null);
+        }
+        String telefono=numeroreftxt.getText().toString();
+        if (TextUtils.isEmpty(telefono)){
+            numeroreftxt.setError("Este campo es obligatorio");
+            valid=false;
+        }else {
+            numeroreftxt.setError(null);
+        }
+
+        return valid;
     }
 
 }

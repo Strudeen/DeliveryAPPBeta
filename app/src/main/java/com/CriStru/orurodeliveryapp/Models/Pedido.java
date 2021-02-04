@@ -10,6 +10,10 @@ public class Pedido {
         this.completado = completado;
         this.dly = dly;
     }
+    public Pedido(String id, String dly){
+        this.id = id;
+        this.dly = dly;
+    }
 
     public String getId() {
         return id;
