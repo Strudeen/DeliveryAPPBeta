@@ -32,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 
 public class SubCategoriasActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
@@ -138,8 +139,26 @@ public class SubCategoriasActivity extends AppCompatActivity {
                             subCategoriaArrayList.add(new SubCategoria(Categoria,Nombre,Descripcion,FotoUrl,id));
                         }
                     }
-                    mAdapter = new SubCategoriasAdapter(R.layout.subcategorias_card,subCategoriaArrayList,getApplicationContext());
-                    mRecyclerView.setAdapter(mAdapter);
+
+                    if (subCategoriaArrayList.size() != 0 && subCategoriaArrayList != null){
+                        String id = subCategoriaArrayList.get(0).getIdSubCategoria();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("IDSUBCATEGORIA",id);
+                        Fragment fragment=new ProductosFragment();
+                        fragment.setArguments(bundle);
+                        getSupportFragmentManager().popBackStack();
+                        getSupportFragmentManager().beginTransaction().add(R.id.FragmentHolder,fragment).addToBackStack(null).commit();
+
+                        mAdapter = new SubCategoriasAdapter(R.layout.subcategorias_card,subCategoriaArrayList,getApplicationContext());
+                        mRecyclerView.setAdapter(mAdapter);
+                    }
+                    else {
+                        tvEmpezar.setVisibility(View.VISIBLE);
+                        tvEmpezar.setText("No hay subcategorias");
+                    }
+
+
+                        
                 }
             }
 

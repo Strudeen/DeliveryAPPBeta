@@ -199,21 +199,20 @@ public class add_user_admin extends AppCompatActivity implements View.OnClickLis
                             user.updateProfile(profileUpdates).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+
                                     Log.d("Success", "DisplayName"+user.getDisplayName());
                                     DisplayName = user.getDisplayName();
                                     Log.d("Success", "createUserWithEmail:success");
 
                                     SaveDataUser(user);
-                                    Clear();
+                                    Toast.makeText(add_user_admin.this, "Usuario creado con éxito", Toast.LENGTH_SHORT).show();
                                     //sendEmailVerification(user);
                                     Log.d("Success", "Email Verification");
 
+                                   // updateUI(user);
+
                                     progressBarSignUp.setVisibility(View.INVISIBLE);
 
-                                    FirebaseAuth.getInstance().signOut();
-                                    LoginManager.getInstance().logOut();
-                                    goLoginScreen();
-                                   // updateUI(user);
                                 }
                             });
 
@@ -239,6 +238,9 @@ public class add_user_admin extends AppCompatActivity implements View.OnClickLis
             tableUsuario.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+
                     if (dataSnapshot.child(Uid).exists()){
                         Toast.makeText(add_user_admin.this,"El usuario ya esta registrado",Toast.LENGTH_SHORT).show();
                         progressBarSignUp.setVisibility(View.INVISIBLE);
@@ -248,10 +250,15 @@ public class add_user_admin extends AppCompatActivity implements View.OnClickLis
                         tableUsuario.child(Uid).setValue(usuario);
                         tableUsuario.child(Uid).child("token").setValue(Fcm.getToken(getApplicationContext()));
 
+                        FirebaseAuth.getInstance().signOut();
+                        LoginManager.getInstance().logOut();
+                        goLoginScreen();
+
 
                         Log.d("Success", "Save user data");
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -272,19 +279,6 @@ public class add_user_admin extends AppCompatActivity implements View.OnClickLis
                 CreateAccount(etEmail.getText().toString(),etContraseña.getText().toString());
                 break;
         }
-    }
-
-    public void Clear(){
-        etEmail.setText("");
-        etEmail.setError(null);
-        etContraseña.setText("");
-        etContraseña.setError(null);
-        etNombre.setText("");
-        etNombre.setError(null);
-        etApellido.setText("");
-        etApellido.setError(null);
-        mSpinner.setSelection(0);
-        Toast.makeText(this, "Usuario añadido con Exito!", Toast.LENGTH_SHORT).show();
     }
 
 

@@ -107,10 +107,13 @@ public class PedidosFragment extends Fragment {
                     getPedidosArray.clear();
                     getPedidosArray2.clear();
                     i=0;
+
                     for (DataSnapshot ds:
                             dataSnapshot.getChildren()) {
+
                         String id=ds.getKey();
                         data.clear();
+
                         String dly="";
                         if (ds.child("DLY").exists()){
                             dly = ds.child("DLY").getValue().toString();
@@ -125,23 +128,32 @@ public class PedidosFragment extends Fragment {
                                         if (dataSnapshot.exists()){
                                             if(ds.child("estado").exists() && ds.child("estado").getValue().toString().equals("true")){
                                                 data.add(new Pedido(id,true,dataSnapshot.child("nombre").getValue().toString()));
-                                                Log.d("data",data.get(i).getDly() +i + "true");
+                                                Log.d("data1",data.get(i).getDly() +i + "true");
                                                 i++;
                                             }
                                             else {
                                                 data.add(new Pedido(id,false,dataSnapshot.child("nombre").getValue().toString()));
-                                                Log.d("data",data.get(i).getDly() + i + "false");
+                                                Log.d("data2",data.get(i).getDly() + i + "false");
                                                 i++;
                                             }
                                         }
                                         else {
                                             data.add(new Pedido(id,false,"0"));
-                                            Log.d("data",data.get(i).getDly()+i);
+                                            Log.d("data3",data.get(i).getDly()+i);
                                             i++;
                                         }
                                     }
 
+
+                                    pedidosArray.clear();
+                                    pedidosArray2.clear();
+                                    getPedidosArray.clear();
+                                    getPedidosArray2.clear();
+
+
                                     for (int j = 0; j<data.size();j++) {
+
+
                                         if (data.get(j).isCompletado()){
                                             pedidosArray.add("Pedido: "+j+"\n Completado por: "+ data.get(j).getDly());
                                             getPedidosArray.add(data.get(j).getId());
@@ -158,6 +170,7 @@ public class PedidosFragment extends Fragment {
                                             }
                                         }
                                     }
+
                                     if (pedidosState == true){
                                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
                                                 android.R.layout.simple_list_item_1, android.R.id.text1,pedidosArray);
@@ -169,7 +182,9 @@ public class PedidosFragment extends Fragment {
                                         adapter.notifyDataSetChanged();
                                         listView.setAdapter(adapter);
                                     }
+
                                 }
+
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -179,6 +194,7 @@ public class PedidosFragment extends Fragment {
 
                         }
                     }
+
                 }
             }
 
